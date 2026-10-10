@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEOFRAME — Posters, posts and decks that stop the scroll</title>
+  <meta name="description" content="NEOFRAME is a design toolkit for students, clubs and creators. Pick a loud template, drop in your brand colours and export print-ready files in minutes. Join the early access.">
+  <link rel="canonical" href="https://neoframe.aditya-dev.com/">
+  <meta name="theme-color" content="#FAFF00">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NEOFRAME">
+  <meta property="og:title" content="NEOFRAME — Posters, posts and decks that stop the scroll">
+  <meta property="og:description" content="A design toolkit for students, clubs and creators. Join the early access.">
+  <meta property="og:url" content="https://neoframe.aditya-dev.com/">
+  <meta property="og:image" content="https://neoframe.aditya-dev.com/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!--FONTS-->
+  <link rel="preload" as="image" href="assets/hero.avif" type="image/avif">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-paper font-sans text-ink">
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-acid focus:px-4 focus:py-2 focus:font-bold">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="sticky top-0 z-50 border-b-[3px] border-ink bg-paper">
+    <div class="mx-auto flex h-[69px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+      <a href="#top" class="flex items-center gap-2 text-2xl font-extrabold tracking-tight" aria-label="NEOFRAME home">
+        <svg viewBox="0 0 24 24" class="h-6 w-6" aria-hidden="true"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+        <span>NEOFRAME</span>
+      </a>
+      <nav aria-label="Main" class="hidden items-center gap-1 text-[15px] font-semibold md:flex">
+        <a href="#features" class="rounded-full px-3.5 py-2 hover:bg-acid">Features</a>
+        <a href="#how" class="rounded-full px-3.5 py-2 hover:bg-acid">How it works</a>
+        <a href="#templates" class="rounded-full px-3.5 py-2 hover:bg-acid">Templates</a>
+        <a href="#pricing" class="rounded-full px-3.5 py-2 hover:bg-acid">Pricing</a>
+        <a href="#faq" class="rounded-full px-3.5 py-2 hover:bg-acid">FAQ</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <button type="button" data-waitlist class="btn btn-ink hidden px-5 py-2.5 text-sm sm:inline-flex">Join the waitlist</button>
+        <button type="button" id="menu-btn" class="grid h-11 w-11 place-items-center rounded-full border-[3px] border-ink md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+          <i-con name="menu" class="h-5 w-5"></i-con>
+        </button>
+      </div>
+    </div>
+    <nav id="mobile-menu" aria-label="Mobile" class="hidden border-t-[3px] border-ink bg-acid md:hidden">
+      <ul class="mx-auto flex max-w-7xl flex-col px-4 py-3 text-xl font-bold">
+        <li><a href="#features" class="block py-2.5">Features</a></li>
+        <li><a href="#how" class="block py-2.5">How it works</a></li>
+        <li><a href="#templates" class="block py-2.5">Templates</a></li>
+        <li><a href="#pricing" class="block py-2.5">Pricing</a></li>
+        <li><a href="#faq" class="block py-2.5">FAQ</a></li>
+        <li class="pt-2 pb-1"><button type="button" data-waitlist class="btn btn-ink w-full">Join the waitlist</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section id="top" class="dots relative overflow-hidden border-b-[3px] border-ink">
+      <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 pb-20 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:pb-28 lg:pt-16">
+        <div class="lg:col-span-7">
+          <h1 class="display text-[clamp(3.4rem,min(10vw,13vh),8.4rem)] uppercase">
+            Make posters, posts&nbsp;&amp;&nbsp;decks
+            <span class="tape mt-2 inline-block -rotate-1 rounded-xl border-[3px] border-ink px-3 pb-1 pt-2 shadow-brut">that stop the scroll</span>
+          </h1>
+          <p class="mt-8 max-w-xl text-lg leading-relaxed text-neutral-800 sm:text-xl">
+            NEOFRAME is a design toolkit for students, clubs and creators. Pick a loud template, drop in your colours, and export files ready for print or Instagram in minutes.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center gap-3">
+            <button type="button" data-waitlist class="btn btn-ink text-lg">Join the early access</button>
+            <a href="#how" class="btn btn-paper text-lg">See how it works</a>
+          </div>
+          <p class="mt-5 text-sm font-medium text-neutral-700">Free while we're in early access. No card needed.</p>
+        </div>
+
+        <div class="relative mx-auto w-full max-w-[480px] lg:col-span-5">
+          <div id="hero-art" class="relative" data-tilt>
+            <div class="overflow-hidden rounded-3xl border-[4px] border-ink bg-paper shadow-brut-lg">
+              <img src="assets/hero.avif" width="720" height="720" alt="Pop-art collage of a marble statue on neon yellow, pink and green shapes with a 'Create faster' sign" class="h-auto w-full" fetchpriority="high">
+            </div>
+            <div class="drag sticker slap slap-1 absolute -left-4 -top-5 bg-paper [--r:-6deg]" style="rotate:-6deg">
+              <i-con name="zap" class="h-4 w-4"></i-con> Create faster
+            </div>
+            <div class="drag sticker slap slap-2 absolute -bottom-5 -right-3 bg-acid font-sans font-extrabold [--r:3deg]" style="rotate:3deg">
+              Early access 2026
+            </div>
+            <div class="drag sticker slap slap-3 absolute -right-6 top-1/3 bg-hot text-paper [--r:8deg]" style="rotate:8deg">
+              Drag me
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section id="features" class="on-dark dots-light relative border-b-[3px] border-ink bg-ink py-24 text-paper">
+      <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <h2 class="display text-[clamp(2.8rem,6vw,4.6rem)]">Everything for a fest poster, a club feed or a pitch deck.</h2>
+          <p class="mt-6 max-w-md text-lg leading-relaxed text-neutral-300">One place to design it, brand it, share it with your team and export it — without opening five different apps.</p>
+          <ul class="mt-10 divide-y divide-white/15 border-y border-white/15">
+            <li class="flex gap-4 py-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-acid text-ink"><i-con name="zap" class="h-5 w-5"></i-con></span>
+              <div><h3 class="text-lg font-bold">Quick to start</h3><p class="text-neutral-400">Pick a template and you're editing in seconds.</p></div>
+            </li>
+            <li class="flex gap-4 py-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-cyan text-ink"><i-con name="users" class="h-5 w-5"></i-con></span>
+              <div><h3 class="text-lg font-bold">Edit together</h3><p class="text-neutral-400">Invite your team and work on the same file at the same time.</p></div>
+            </li>
+            <li class="flex gap-4 py-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-hot text-ink"><i-con name="layout-template" class="h-5 w-5"></i-con></span>
+              <div><h3 class="text-lg font-bold">Templates with attitude</h3><p class="text-neutral-400">Posters, carousels, slides and covers — none of them beige.</p></div>
+            </li>
+            <li class="flex gap-4 py-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-paper text-ink"><i-con name="palette" class="h-5 w-5"></i-con></span>
+              <div><h3 class="text-lg font-bold">Your brand, everywhere</h3><p class="text-neutral-400">Save your colours and fonts once and apply them to every design.</p></div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- App mockup -->
+        <div class="relative lg:col-span-7">
+          <figure class="overflow-hidden rounded-2xl border-[3px] border-paper bg-neutral-950 shadow-[10px_10px_0_0_#FAFF00]">
+            <figcaption class="sr-only">Preview of the NEOFRAME app: a template library with posters, social posts, slides and covers.</figcaption>
+            <div class="flex items-center justify-between gap-3 border-b border-white/15 bg-neutral-900 px-4 py-3">
+              <div class="flex items-center gap-2" aria-hidden="true">
+                <span class="h-3 w-3 rounded-full bg-hot"></span><span class="h-3 w-3 rounded-full bg-acid"></span><span class="h-3 w-3 rounded-full bg-cyan"></span>
+              </div>
+              <div class="flex gap-1 rounded-full bg-black p-1 text-xs font-semibold" role="group" aria-label="Filter templates in preview">
+                <button type="button" class="dash-tab rounded-full bg-paper px-3 py-1 text-ink" data-cat="all" aria-pressed="true">All</button>
+                <button type="button" class="dash-tab rounded-full px-3 py-1 text-neutral-400 hover:text-paper" data-cat="posters" aria-pressed="false">Posters</button>
+                <button type="button" class="dash-tab rounded-full px-3 py-1 text-neutral-400 hover:text-paper" data-cat="social" aria-pressed="false">Social</button>
+                <button type="button" class="dash-tab rounded-full px-3 py-1 text-neutral-400 hover:text-paper" data-cat="slides" aria-pressed="false">Slides</button>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="hidden w-40 shrink-0 flex-col gap-1 border-r border-white/10 p-3 text-sm text-neutral-400 sm:flex" aria-hidden="true">
+                <span class="flex items-center gap-2.5 rounded-lg px-2.5 py-2"><i-con name="house" class="h-4 w-4"></i-con>Home</span>
+                <span class="flex items-center gap-2.5 rounded-lg bg-white/10 px-2.5 py-2 font-bold text-paper"><i-con name="layout-template" class="h-4 w-4"></i-con>Templates</span>
+                <span class="flex items-center gap-2.5 rounded-lg px-2.5 py-2"><i-con name="folder" class="h-4 w-4"></i-con>Projects</span>
+                <span class="flex items-center gap-2.5 rounded-lg px-2.5 py-2"><i-con name="tag" class="h-4 w-4"></i-con>Brand kit</span>
+                <span class="flex items-center gap-2.5 rounded-lg px-2.5 py-2"><i-con name="users" class="h-4 w-4"></i-con>Team</span>
+              </div>
+              <div class="grid flex-1 grid-cols-2 gap-3 p-3 sm:p-4">
+                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover transition" data-cat="posters" src="assets/card-tech-event.avif" width="480" height="643" alt="Synapse tech forum poster template" loading="lazy">
+                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover transition" data-cat="social" src="assets/card-carousel.avif" width="480" height="643" alt="Urban Artifact streetwear social post template" loading="lazy">
+                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover transition" data-cat="slides" src="assets/card-presentation.avif" width="480" height="643" alt="Make It Real presentation cover template" loading="lazy">
+                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover transition" data-cat="posters" src="assets/card-portfolio.avif" width="480" height="643" alt="Archetype editorial portfolio cover template" loading="lazy">
+              </div>
+            </div>
+          </figure>
+          <div class="sticker absolute -bottom-5 left-6 -rotate-3 bg-paper text-ink">Templates that hit different</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS (3 real steps) ============ -->
+    <section id="how" class="relative border-b-[3px] border-ink bg-cyan lg:h-[300vh]">
+      <div id="wf-stage" class="dots mx-auto flex max-w-7xl flex-col px-4 py-20 sm:px-6 lg:sticky lg:top-[72px] lg:h-[calc(100vh-72px)] lg:justify-center lg:py-10">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-6 lg:mb-8">
+          <h2 class="display text-[clamp(2.8rem,6vw,4.6rem)]">From blank page to posted in three steps.</h2>
+          <ol class="hidden items-center gap-2 lg:flex" aria-label="Steps">
+            <li><button type="button" class="wf-dot h-3 w-16 rounded-full border-2 border-ink bg-ink" data-step="0" aria-label="Step 1: Start from a template"></button></li>
+            <li><button type="button" class="wf-dot h-3 w-16 rounded-full border-2 border-ink bg-paper" data-step="1" aria-label="Step 2: Drop in your colours"></button></li>
+            <li><button type="button" class="wf-dot h-3 w-16 rounded-full border-2 border-ink bg-paper" data-step="2" aria-label="Step 3: Export it"></button></li>
+          </ol>
+        </div>
+
+        <div class="wf-grid">
+          <!-- Step 1 text -->
+          <div class="wf-text wf-text-0 is-active">
+            <p class="font-bold">Step 1 of 3</p>
+            <h3 class="display mt-2 text-5xl sm:text-6xl">Start from a template</h3>
+            <p class="mt-4 max-w-lg text-lg leading-relaxed">Every layout is fully editable — swap the photo, retype the headline, move anything. Smart guides keep it lined up while you go fast.</p>
+            <ul class="mt-6 flex flex-wrap gap-2 text-sm font-bold">
+              <li class="rounded-full border-2 border-ink bg-paper px-3 py-1.5">Snap-to guides</li>
+              <li class="rounded-full border-2 border-ink bg-paper px-3 py-1.5">Editable text and shapes</li>
+              <li class="rounded-full border-2 border-ink bg-paper px-3 py-1.5">Resize for any format</li>
+            </ul>
+          </div>
+          <!-- Step 1 visual: editor with a selection -->
+          <div class="wf-vis wf-vis-0 is-active" aria-hidden="true">
+            <div class="relative mx-auto max-w-[460px] rounded-3xl border-[3px] border-ink bg-paper p-5 shadow-brut-lg lg:max-w-[min(420px,52vh)]">
+              <div class="mb-4 flex items-center gap-2 rounded-xl border-2 border-ink bg-smoke px-3 py-2 text-sm font-bold">
+                <span class="rounded bg-paper px-2 py-0.5">Aa Bricolage</span>
+                <span class="rounded bg-paper px-2 py-0.5">96</span>
+                <span class="h-5 w-5 rounded border-2 border-ink bg-acid"></span>
+                <span class="h-5 w-5 rounded border-2 border-ink bg-hot"></span>
+                <span class="ml-auto"><i-con name="pen-tool" class="h-4 w-4"></i-con></span>
+              </div>
+              <div class="relative">
+                <img src="assets/card-presentation.avif" width="480" height="643" alt="" class="aspect-[4/5] w-full rounded-xl object-cover" loading="lazy">
+                <div class="absolute left-[6%] right-[8%] top-[9%] h-[38%] border-2 border-dashed border-hot">
+                  <span class="absolute -left-1.5 -top-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
+                  <span class="absolute -right-1.5 -top-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
+                  <span class="absolute -bottom-1.5 -left-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
+                  <span class="absolute -bottom-1.5 -right-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
+                  <span class="absolute -top-8 left-0 rounded-md bg-hot px-2 py-0.5 text-xs font-bold text-paper">Headline</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 text -->
+          <div class="wf-text wf-text-1">
+            <p class="font-bold">Step 2 of 3</p>
+            <h3 class="display mt-2 text-5xl sm:text-6xl">Drop in your colours</h3>
+            <p class="mt-4 max-w-lg text-lg leading-relaxed">Save your club or brand palette once. Switch it and every design updates — try it here.</p>
+            <div class="mt-6 inline-flex flex-col gap-3 rounded-2xl border-[3px] border-ink bg-paper p-4 shadow-brut">
+              <p class="text-sm font-bold">Brand colour: <span id="accent-name">Acid yellow</span></p>
+              <div class="flex gap-2.5" role="radiogroup" aria-label="Brand colour">
+                <button type="button" role="radio" aria-checked="true"  class="swatch h-10 w-10 rounded-full border-[3px] border-ink bg-acid"     data-hex="#FAFF00" data-name="Acid yellow" aria-label="Acid yellow"></button>
+                <button type="button" role="radio" aria-checked="false" class="swatch h-10 w-10 rounded-full border-[3px] border-ink bg-hot"      data-hex="#FF0080" data-name="Hot pink" aria-label="Hot pink"></button>
+                <button type="button" role="radio" aria-checked="false" class="swatch h-10 w-10 rounded-full border-[3px] border-ink bg-[#3DFF8F]" data-hex="#3DFF8F" data-name="Neon green" aria-label="Neon green"></button>
+                <button type="button" role="radio" aria-checked="false" class="swatch h-10 w-10 rounded-full border-[3px] border-ink bg-[#FF6A00]" data-hex="#FF6A00" data-name="Safety orange" aria-label="Safety orange"></button>
+                <button type="button" role="radio" aria-checked="false" class="swatch h-10 w-10 rounded-full border-[3px] border-ink bg-[#B18CFF]" data-hex="#B18CFF" data-name="Lilac" aria-label="Lilac"></button>
+              </div>
+            </div>
+          </div>
+          <!-- Step 2 visual -->
+          <div class="wf-vis wf-vis-1" aria-hidden="true">
+            <div class="tape relative mx-auto max-w-[520px] lg:max-w-[min(520px,75vh)] rounded-3xl border-[3px] border-ink p-4 shadow-brut-lg">
+              <img src="assets/workflow.avif" width="760" height="567" alt="" class="w-full rounded-2xl border-[3px] border-ink" loading="lazy">
+              <span class="sticker absolute -bottom-4 right-6 rotate-2 bg-paper">Brand kit applied</span>
+            </div>
+          </div>
+
+          <!-- Step 3 text -->
+          <div class="wf-text wf-text-2">
+            <p class="font-bold">Step 3 of 3</p>
+            <h3 class="display mt-2 text-5xl sm:text-6xl">Export it for print or post</h3>
+            <p class="mt-4 max-w-lg text-lg leading-relaxed">Get sharp PNGs for Instagram, light JPGs for WhatsApp, SVGs that scale, and print-ready PDFs with bleed — in one go.</p>
+          </div>
+          <!-- Step 3 visual: export panel -->
+          <div class="wf-vis wf-vis-2" aria-hidden="true">
+            <div class="mx-auto max-w-[460px] rounded-3xl border-[3px] border-ink bg-paper p-5 shadow-brut-lg">
+              <div class="flex items-center gap-4 border-b-2 border-ink pb-4">
+                <img src="assets/card-tech-event.avif" width="480" height="643" alt="" class="h-20 w-16 rounded-md border-2 border-ink object-cover" loading="lazy">
+                <div>
+                  <p class="text-lg font-extrabold">Synapse — fest poster</p>
+                  <p class="text-sm text-neutral-600">Choose your files</p>
+                </div>
+              </div>
+              <ul class="divide-y-2 divide-ink/10 py-2">
+                <li class="flex items-center gap-3 py-3"><span class="grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="h-4 w-4"></i-con></span><b class="w-12">PNG</b><span class="text-neutral-600">Instagram post, 1080 × 1350</span></li>
+                <li class="flex items-center gap-3 py-3"><span class="grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="h-4 w-4"></i-con></span><b class="w-12">JPG</b><span class="text-neutral-600">WhatsApp status, 1080 × 1920</span></li>
+                <li class="flex items-center gap-3 py-3"><span class="h-6 w-6 rounded-md border-2 border-ink"></span><b class="w-12">SVG</b><span class="text-neutral-600">Scales to any size</span></li>
+                <li class="flex items-center gap-3 py-3"><span class="grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="h-4 w-4"></i-con></span><b class="w-12">PDF</b><span class="text-neutral-600">A3 print, 3 mm bleed</span></li>
+              </ul>
+              <div class="mt-2 flex items-center justify-center gap-2 rounded-full border-[3px] border-ink bg-ink py-3.5 font-bold text-paper"><i-con name="download" class="h-5 w-5"></i-con>Export 3 files</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TEMPLATES ============ -->
+    <section id="templates" class="dots relative border-b-[3px] border-ink bg-acid py-24">
+      <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <h2 class="display text-[clamp(2.8rem,6vw,4.6rem)]">Start with a template. Make it yours.</h2>
+          <p class="mt-6 text-lg leading-relaxed">Posters, social posts, slides and covers, all built in this loud, print-ready style. Here's a first look at the launch library.</p>
+          <button type="button" data-waitlist class="btn btn-ink mt-8 text-lg">Get the full library</button>
+        </div>
+        <ul class="grid grid-cols-2 gap-4 sm:gap-5 lg:col-span-8 lg:grid-cols-4">
+          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition hover:-translate-y-1" data-title="Synapse — tech fest poster" data-img="assets/card-tech-event.avif">
+            <img src="assets/card-tech-event.avif" width="480" height="643" alt="" class="aspect-[3/4] w-full object-cover" loading="lazy">
+            <span class="block border-t-[3px] border-ink p-3"><b class="block leading-tight">Tech fest</b><span class="text-sm text-neutral-600">Poster</span></span>
+          </button></li>
+          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition hover:-translate-y-1" data-title="Urban Artifact — social post" data-img="assets/card-carousel.avif">
+            <img src="assets/card-carousel.avif" width="480" height="643" alt="" class="aspect-[3/4] w-full object-cover" loading="lazy">
+            <span class="block border-t-[3px] border-ink p-3"><b class="block leading-tight">Streetwear drop</b><span class="text-sm text-neutral-600">Social carousel</span></span>
+          </button></li>
+          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition hover:-translate-y-1" data-title="Make It Real — slide deck" data-img="assets/card-presentation.avif">
+            <img src="assets/card-presentation.avif" width="480" height="643" alt="" class="aspect-[3/4] w-full object-cover" loading="lazy">
+            <span class="block border-t-[3px] border-ink p-3"><b class="block leading-tight">Make it real</b><span class="text-sm text-neutral-600">Slides</span></span>
+          </button></li>
+          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition hover:-translate-y-1" data-title="Archetype — portfolio cover" data-img="assets/card-portfolio.avif">
+            <img src="assets/card-portfolio.avif" width="480" height="643" alt="" class="aspect-[3/4] w-full object-cover" loading="lazy">
+            <span class="block border-t-[3px] border-ink p-3"><b class="block leading-tight">Archetype</b><span class="text-sm text-neutral-600">Portfolio cover</span></span>
+          </button></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ MADE FOR ============ -->
+    <section class="relative border-b-[3px] border-ink bg-hot py-24">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <h2 class="display max-w-4xl text-[clamp(2.8rem,6vw,4.6rem)]">Made for people who make things on a deadline.</h2>
+        <div class="mt-14 grid gap-8 md:grid-cols-3">
+          <article class="rotate-[-1.5deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg">
+            <span class="grid h-12 w-12 place-items-center rounded-xl border-[3px] border-ink bg-acid"><i-con name="megaphone" class="h-6 w-6"></i-con></span>
+            <h3 class="display mt-5 text-4xl">College fests</h3>
+            <p class="mt-3 text-lg leading-relaxed text-neutral-800">Posters, passes, banners and stories for the whole fest — all in one look, so it actually feels like one event.</p>
+          </article>
+          <article class="rotate-[1deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg md:mt-8">
+            <span class="grid h-12 w-12 place-items-center rounded-xl border-[3px] border-ink bg-cyan"><i-con name="users" class="h-6 w-6"></i-con></span>
+            <h3 class="display mt-5 text-4xl">Clubs &amp; societies</h3>
+            <p class="mt-3 text-lg leading-relaxed text-neutral-800">A month of event posts ready before the meeting ends. Everyone edits the same brand kit, so nobody goes off-brand.</p>
+          </article>
+          <article class="rotate-[-0.5deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg">
+            <span class="grid h-12 w-12 place-items-center rounded-xl border-[3px] border-ink bg-acid"><i-con name="presentation" class="h-6 w-6"></i-con></span>
+            <h3 class="display mt-5 text-4xl">Portfolios &amp; pitches</h3>
+            <p class="mt-3 text-lg leading-relaxed text-neutral-800">Covers and decks that look like you hired a studio, for the internship application or the demo-day slot.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRICING ============ -->
+    <section id="pricing" class="relative border-b-[3px] border-ink bg-paper py-24">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <h2 class="display text-[clamp(2.8rem,6vw,4.6rem)]">Pricing at launch</h2>
+            <p class="mt-4 max-w-lg text-lg text-neutral-700">Join the waitlist now — we'll email you when your plan is ready. Early-access members can use NEOFRAME free while we're in beta.</p>
+          </div>
+          <div class="inline-flex rounded-full border-[3px] border-ink bg-smoke p-1 shadow-brut-sm" role="group" aria-label="Billing period">
+            <button type="button" class="bill rounded-full bg-ink px-5 py-2 text-sm font-bold text-paper" data-bill="monthly" aria-pressed="true">Monthly</button>
+            <button type="button" class="bill flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold" data-bill="annual" aria-pressed="false">Yearly <span class="rounded-full border-2 border-ink bg-acid px-2 text-xs text-ink">Save 20%</span></button>
+          </div>
+        </div>
+
+        <div class="mt-14 grid items-stretch gap-6 md:grid-cols-3">
+          <div class="flex flex-col rounded-3xl border-[3px] border-ink bg-paper p-7">
+            <h3 class="text-2xl font-extrabold">Free</h3>
+            <p class="mt-1 text-neutral-600">For trying things out.</p>
+            <p class="mt-6 flex items-baseline gap-1"><span class="display text-6xl">₹0</span><span class="text-neutral-600">/ month</span></p>
+            <p class="h-5 text-sm text-neutral-600">&nbsp;</p>
+            <ul class="mt-6 flex-1 space-y-3">
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>100+ templates</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Core editing tools</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Standard-quality export</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Community support</li>
+            </ul>
+            <button type="button" data-waitlist data-plan="Free" class="btn btn-paper mt-8 w-full">Join the waitlist</button>
+          </div>
+
+          <div class="relative flex flex-col rounded-3xl border-[3px] border-ink bg-acid p-7 shadow-brut-lg md:-translate-y-3">
+            <span class="sticker absolute -top-4 right-6 rotate-3 bg-ink text-paper">Best for creators</span>
+            <h3 class="text-2xl font-extrabold">Pro</h3>
+            <p class="mt-1 text-neutral-800">For people who post every week.</p>
+            <p class="mt-6 flex items-baseline gap-1"><span class="display text-6xl" data-price-m="₹499" data-price-y="₹399">₹499</span><span class="text-neutral-800">/ month</span></p>
+            <p class="h-5 text-sm text-neutral-800" data-billed-y="₹4,788 billed yearly">&nbsp;</p>
+            <ul class="mt-6 flex-1 space-y-3 font-semibold">
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>The full template library</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>AI design assistant</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Brand kits and custom styles</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>High-quality and print export</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Priority support</li>
+            </ul>
+            <button type="button" data-waitlist data-plan="Pro" class="btn btn-ink mt-8 w-full">Join the waitlist for Pro</button>
+          </div>
+
+          <div class="flex flex-col rounded-3xl border-[3px] border-ink bg-paper p-7">
+            <h3 class="text-2xl font-extrabold">Team</h3>
+            <p class="mt-1 text-neutral-600">For clubs, fests and small studios.</p>
+            <p class="mt-6 flex items-baseline gap-1"><span class="display text-6xl" data-price-m="₹1,499" data-price-y="₹1,199">₹1,499</span><span class="text-neutral-600">/ month</span></p>
+            <p class="h-5 text-sm text-neutral-600" data-billed-y="₹14,388 billed yearly">&nbsp;</p>
+            <ul class="mt-6 flex-1 space-y-3">
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Everything in Pro</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Live co-editing</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Shared team workspace</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Admin controls</li>
+              <li class="flex gap-3"><i-con name="check" class="mt-0.5 h-5 w-5 shrink-0"></i-con>Dedicated support</li>
+            </ul>
+            <button type="button" data-waitlist data-plan="Team" class="btn btn-paper mt-8 w-full">Join the waitlist for Team</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section id="faq" class="dots relative border-b-[3px] border-ink bg-smoke py-24">
+      <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <h2 class="display text-[clamp(2.8rem,6vw,4.6rem)]">Questions, answered</h2>
+          <p class="mt-4 text-lg text-neutral-700">Something else on your mind? Add it as a note when you join the waitlist and we'll reply by email.</p>
+        </div>
+        <div class="space-y-3 lg:col-span-8">
+          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">When does NEOFRAME launch?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
+            <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">We're opening access in waves through 2026. Join the waitlist and you'll get an email when your spot opens — waitlist members go first.</p>
+          </details>
+          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Will there be a free plan?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
+            <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">Yes. The Free plan includes 100+ templates, the core editor and standard exports, with no card needed.</p>
+          </details>
+          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Can I use my designs commercially?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
+            <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">Designs made on Pro and Team come with a commercial licence for client work, merch, ads and digital products.</p>
+          </details>
+          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Is there a student discount?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
+            <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">Yes — verified students get 50% off Pro. Pick "Student" when you join the waitlist and we'll send the details at launch.</p>
+          </details>
+          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Which file formats can I export?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
+            <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">PNG, JPG, SVG, and print-ready PDF with bleed and crop marks.</p>
+          </details>
+          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Can my whole team work on one design?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
+            <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">Yes. Team plans include live co-editing, a shared brand kit, font uploads and role-based permissions.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section id="join" class="relative overflow-hidden border-b-[3px] border-ink bg-acid py-20 lg:py-24">
+      <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <h2 class="display text-[clamp(3.2rem,8vw,6.5rem)] uppercase">Your next poster is due Friday.</h2>
+          <p class="mt-5 max-w-lg text-xl font-semibold">Get on the early-access list and be one of the first to make it in NEOFRAME.</p>
+          <form class="waitlist-form mt-8 max-w-xl" novalidate>
+            <label for="cta-email" class="mb-2 block font-bold">Your email</label>
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <input id="cta-email" name="email" type="email" autocomplete="email" required placeholder="you@college.edu" class="field flex-1">
+              <input type="text" name="company" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+              <input type="hidden" name="source" value="footer-cta">
+              <button type="submit" class="btn btn-ink">Join the waitlist</button>
+            </div>
+            <p class="form-status mt-3 min-h-[1.5rem] font-semibold" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div class="mx-auto w-full max-w-[420px] lg:col-span-5">
+          <div class="rotate-2 overflow-hidden rounded-3xl border-[4px] border-ink bg-paper shadow-brut-lg">
+            <img src="assets/cta.avif" width="640" height="640" alt="Marble bust with a hot-pink paint stroke across the eyes and an 'Ideas Design Impact' sign" class="h-auto w-full" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="on-dark bg-ink py-14 text-paper">
+    <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <a href="#top" class="flex items-center gap-2 text-2xl font-extrabold">
+          <svg viewBox="0 0 24 24" class="h-6 w-6 fill-acid" aria-hidden="true"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>NEOFRAME
+        </a>
+        <p class="mt-4 max-w-sm text-neutral-400">A design toolkit for students, clubs and creators. Coming 2026.</p>
+      </div>
+      <nav aria-label="Footer" class="md:col-span-3">
+        <ul class="space-y-2 text-neutral-300">
+          <li><a class="hover:text-acid" href="#features">Features</a></li>
+          <li><a class="hover:text-acid" href="#how">How it works</a></li>
+          <li><a class="hover:text-acid" href="#templates">Templates</a></li>
+          <li><a class="hover:text-acid" href="#pricing">Pricing</a></li>
+          <li><a class="hover:text-acid" href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+      <div id="privacy" class="md:col-span-4">
+        <h2 class="font-bold">Your privacy</h2>
+        <p class="mt-2 text-sm leading-relaxed text-neutral-400">When you join the waitlist we store your email and the answers you give, only to send you launch and access updates. We never sell or share it. Reply to any email to be removed.</p>
+      </div>
+      <p class="border-t border-white/15 pt-6 text-sm text-neutral-500 md:col-span-12">© 2026 NEOFRAME</p>
+    </div>
+  </footer>
+
+  <!-- ============ WAITLIST DIALOG ============ -->
+  <dialog id="waitlist" aria-labelledby="wl-title" class="w-[min(92vw,30rem)] rounded-3xl border-[4px] border-ink bg-paper p-0 text-ink shadow-brut-lg">
+    <div class="p-7">
+      <div class="flex items-start justify-between gap-4">
+        <h2 id="wl-title" class="display text-5xl">Join the early access</h2>
+        <button type="button" data-close class="grid h-10 w-10 shrink-0 place-items-center rounded-full border-[3px] border-ink hover:bg-acid" aria-label="Close"><i-con name="x" class="h-5 w-5"></i-con></button>
+      </div>
+      <p class="mt-3 text-neutral-700">We'll email you when your spot opens. No spam.</p>
+      <form class="waitlist-form mt-6 space-y-4" novalidate>
+        <div>
+          <label for="wl-email" class="mb-1.5 block font-bold">Email</label>
+          <input id="wl-email" name="email" type="email" autocomplete="email" required placeholder="you@college.edu" class="field">
+        </div>
+        <div>
+          <label for="wl-role" class="mb-1.5 block font-bold">I'm a…</label>
+          <select id="wl-role" name="role" class="field">
+            <option value="">Choose one (optional)</option>
+            <option>Student</option>
+            <option>Creator or freelancer</option>
+            <option>Club, society or fest team</option>
+            <option>Startup or agency</option>
+          </select>
+        </div>
+        <div>
+          <label for="wl-note" class="mb-1.5 block font-bold">What will you make first? <span class="font-normal text-neutral-600">(optional)</span></label>
+          <textarea id="wl-note" name="note" rows="2" maxlength="500" class="field resize-none" placeholder="A poster for our tech fest…"></textarea>
+        </div>
+        <input type="hidden" name="plan" value="">
+        <input type="hidden" name="source" value="dialog">
+        <input type="text" name="company" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+        <p class="plan-chip hidden text-sm font-bold"></p>
+        <button type="submit" class="btn btn-ink w-full text-lg">Join the waitlist</button>
+        <p class="form-status min-h-[1.5rem] font-semibold" role="status" aria-live="polite"></p>
+        <p class="text-xs text-neutral-600">We only use your email for launch updates. See <a href="#privacy" data-close class="underline">privacy</a>.</p>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ============ TEMPLATE PREVIEW DIALOG ============ -->
+  <dialog id="preview" aria-labelledby="pv-title" class="w-[min(92vw,34rem)] rounded-3xl border-[4px] border-ink bg-paper p-0 text-ink shadow-brut-lg">
+    <div class="p-6">
+      <div class="flex items-start justify-between gap-4">
+        <h2 id="pv-title" class="text-2xl font-extrabold">Template</h2>
+        <button type="button" data-close class="grid h-10 w-10 shrink-0 place-items-center rounded-full border-[3px] border-ink hover:bg-acid" aria-label="Close"><i-con name="x" class="h-5 w-5"></i-con></button>
+      </div>
+      <img id="pv-img" src="" alt="" width="480" height="643" class="mt-4 max-h-[60vh] w-full rounded-2xl border-[3px] border-ink object-contain bg-smoke">
+      <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+        <p class="text-neutral-700">Part of the launch library. Fully editable.</p>
+        <button type="button" id="pv-cta" class="btn btn-ink">Get early access</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+  (() => {
+    const $ = (s, r = document) => r.querySelector(s);
+    const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    /* ---------- Mobile menu ---------- */
+    const menuBtn = $('#menu-btn'), menu = $('#mobile-menu');
+    const setMenu = open => { menu.classList.toggle('hidden', !open); menuBtn.setAttribute('aria-expanded', open); menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+    menuBtn.addEventListener('click', () => setMenu(menu.classList.contains('hidden')));
+    $$('a, button', menu).forEach(el => el.addEventListener('click', () => setMenu(false)));
+
+    /* ---------- Hero tilt (hero only) ---------- */
+    const art = $('#hero-art');
+    if (art && finePointer && !reduce) {
+      art.style.transition = 'transform .15s ease-out';
+      art.addEventListener('pointermove', e => {
+        if (e.target.closest('.drag')) return;
+        const r = art.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        art.style.transform = `perspective(900px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg)`;
+      });
+      art.addEventListener('pointerleave', () => art.style.transform = '');
+    }
+
+    /* ---------- Draggable stickers (stay inside the hero) ---------- */
+    $$('.drag').forEach(el => {
+      let sx, sy, ox = 0, oy = 0, dragging = false;
+      el.addEventListener('pointerdown', e => { dragging = true; el.setPointerCapture(e.pointerId); sx = e.clientX - ox; sy = e.clientY - oy; el.style.zIndex = 30; el.classList.remove('slap'); });
+      el.addEventListener('pointermove', e => { if (!dragging) return; ox = e.clientX - sx; oy = e.clientY - sy; el.style.translate = `${ox}px ${oy}px`; });
+      const end = () => { dragging = false; };
+      el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+    });
+
+    /* ---------- App mockup filter ---------- */
+    $$('.dash-tab').forEach(btn => btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      $$('.dash-tab').forEach(b => {
+        const on = b === btn;
+        b.setAttribute('aria-pressed', on);
+        b.classList.toggle('bg-paper', on); b.classList.toggle('text-ink', on); b.classList.toggle('text-neutral-400', !on);
+      });
+      $$('.dash-card').forEach(c => {
+        const match = cat === 'all' || c.dataset.cat === cat;
+        c.style.opacity = match ? 1 : .18;
+        c.style.outline = match && cat !== 'all' ? '3px solid #FAFF00' : '';
+      });
+    }));
+
+    /* ---------- How it works: pinned steps on desktop ---------- */
+    const how = $('#how');
+    const desktop = matchMedia('(min-width: 1024px)');
+    let step = 0;
+    function setStep(i) {
+      step = i;
+      $$('.wf-text, .wf-vis').forEach(el => el.classList.toggle('is-active', el.classList.contains('wf-text-' + i) || el.classList.contains('wf-vis-' + i)));
+      $$('.wf-dot').forEach((d, j) => { d.classList.toggle('bg-ink', j <= i); d.classList.toggle('bg-paper', j > i); d.setAttribute('aria-current', j === i ? 'step' : 'false'); });
+    }
+    function onScroll() {
+      if (!desktop.matches) return;
+      const total = how.offsetHeight - innerHeight;
+      const p = Math.min(1, Math.max(0, -how.getBoundingClientRect().top / total));
+      const i = p < .34 ? 0 : p < .67 ? 1 : 2;
+      if (i !== step) setStep(i);
+    }
+    addEventListener('scroll', onScroll, { passive: true });
+    desktop.addEventListener('change', onScroll);
+    $$('.wf-dot').forEach(d => d.addEventListener('click', () => {
+      const total = how.offsetHeight - innerHeight;
+      scrollTo({ top: how.offsetTop + total * [.1, .5, .9][d.dataset.step], behavior: reduce ? 'auto' : 'smooth' });
+    }));
+    // keyboard users tabbing into a hidden step: reveal it
+    $$('.wf-text').forEach((el, i) => el.addEventListener('focusin', () => desktop.matches && setStep(i)));
+
+    /* ---------- Brand colour demo ---------- */
+    $$('.swatch').forEach(s => s.addEventListener('click', () => {
+      document.documentElement.style.setProperty('--accent', s.dataset.hex);
+      $('#accent-name').textContent = s.dataset.name;
+      $$('.swatch').forEach(o => o.setAttribute('aria-checked', o === s));
+    }));
+
+    /* ---------- Billing toggle ---------- */
+    $$('.bill').forEach(b => b.addEventListener('click', () => {
+      const yearly = b.dataset.bill === 'annual';
+      $$('.bill').forEach(o => { const on = o === b; o.setAttribute('aria-pressed', on); o.classList.toggle('bg-ink', on); o.classList.toggle('text-paper', on); });
+      $$('[data-price-m]').forEach(el => el.textContent = yearly ? el.dataset.priceY : el.dataset.priceM);
+      $$('[data-billed-y]').forEach(el => el.innerHTML = yearly ? el.dataset.billedY : '&nbsp;');
+    }));
+
+    /* ---------- Dialogs ---------- */
+    const wl = $('#waitlist'), pv = $('#preview');
+    function openWaitlist(plan) {
+      const f = $('form', wl);
+      f.plan.value = plan || '';
+      const chip = $('.plan-chip', wl);
+      chip.textContent = plan ? `Interested in: ${plan}` : '';
+      chip.classList.toggle('hidden', !plan);
+      wl.showModal();
+    }
+    $$('[data-waitlist]').forEach(b => b.addEventListener('click', () => openWaitlist(b.dataset.plan)));
+    $$('dialog').forEach(d => {
+      d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-close]')) d.close(); });
+    });
+    $$('.tmpl').forEach(t => t.addEventListener('click', () => {
+      $('#pv-title').textContent = t.dataset.title;
+      const img = $('#pv-img'); img.src = t.dataset.img; img.alt = t.dataset.title + ' template preview';
+      pv.showModal();
+    }));
+    $('#pv-cta').addEventListener('click', () => { pv.close(); openWaitlist(); });
+
+    /* ---------- Waitlist submit ---------- */
+    const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    $$('.waitlist-form').forEach(form => form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const status = $('.form-status', form), btn = $('button[type=submit]', form);
+      const data = Object.fromEntries(new FormData(form));
+      if (!EMAIL.test((data.email || '').trim())) {
+        status.textContent = 'Enter a valid email address, like you@college.edu.';
+        status.className = 'form-status mt-3 min-h-[1.5rem] font-semibold text-red-700';
+        form.email.focus(); return;
+      }
+      btn.disabled = true; const label = btn.textContent; btn.textContent = 'Joining…';
+      status.textContent = ''; status.className = 'form-status mt-3 min-h-[1.5rem] font-semibold';
+      try {
+        const res = await fetch('/api/waitlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        const out = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(out.error || 'save-failed');
+        form.reset();
+        status.textContent = `You're on the list. We'll email ${data.email.trim()} when your spot opens.`;
+      } catch (err) {
+        status.textContent = err.message === 'invalid-email'
+          ? 'That email doesn\'t look right. Check it and try again.'
+          : 'Couldn\'t save that just now. Try again in a minute.';
+        status.className = 'form-status mt-3 min-h-[1.5rem] font-semibold text-red-700';
+      } finally { btn.disabled = false; btn.textContent = label; }
+    }));
+  })();
+  </script>
+</body>
+</html>

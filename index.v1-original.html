@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEOFRAME — Turn Ideas Into Stunning Designs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            yellow: '#FAFF00',
+                            yellowDark: '#FFE600',
+                            magenta: '#FF0080',
+                            pink: '#EC4899',
+                            cyan: '#00F0FF',
+                            purple: '#8B5CF6',
+                            emerald: '#10B981',
+                            dark: '#0B0C10',
+                            charcoal: '#121318'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+                        marker: ['"Permanent Marker"', 'cursive'],
+                        hand: ['Caveat', 'cursive'],
+                        mono: ['"Space Mono"', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --brand-accent: #FAFF00;
+            --brand-accent-glow: rgba(250, 255, 0, 0.4);
+        }
+
+        /* Custom Interactive Mouse Cursor */
+        @media (hover: hover) and (pointer: fine) {
+            * { cursor: none !important; }
+        }
+        #cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 8px; height: 8px;
+            background-color: var(--brand-accent);
+            border: 1.5px solid #000;
+            border-radius: 9999px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s ease, height 0.15s ease, background-color 0.2s ease, opacity 0.2s ease;
+        }
+        #cursor-ring {
+            position: fixed;
+            top: 0; left: 0;
+            width: 36px; height: 36px;
+            border: 2px solid #000;
+            background-color: rgba(250, 255, 0, 0.15);
+            border-radius: 9999px;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        height 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        background-color 0.2s ease, 
+                        border-color 0.2s ease,
+                        opacity 0.2s ease;
+        }
+        #cursor-ring.cursor-active {
+            width: 58px; height: 58px;
+            background-color: rgba(250, 255, 0, 0.3);
+            border-width: 2.5px;
+            border-color: #000;
+        }
+        #cursor-ring.cursor-view {
+            width: 72px; height: 72px;
+            background-color: #000;
+            border-color: var(--brand-accent);
+        }
+        #cursor-badge-text {
+            display: none;
+            color: #FAFF00;
+            font-size: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            text-align: center;
+            line-height: 72px;
+        }
+        #cursor-ring.cursor-view #cursor-badge-text {
+            display: block;
+        }
+
+        /* Halftone Dot Pattern Backgrounds */
+        .bg-halftone-dots {
+            background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+        }
+        .bg-halftone-dark {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+            background-size: 22px 22px;
+        }
+        .bg-halftone-yellow {
+            background-image: radial-gradient(rgba(0, 0, 0, 0.14) 2px, transparent 2px);
+            background-size: 24px 24px;
+        }
+
+        /* Neo-Brutalist Hard Shadows */
+        .brutal-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .brutal-shadow-sm {
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .brutal-shadow-lg {
+            box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .brutal-shadow-xl {
+            box-shadow: 12px 12px 0px 0px rgba(0, 0, 0, 1);
+        }
+
+        /* 3D Specular Tilt Card Effect */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.15s ease-out, box-shadow 0.25s ease;
+            position: relative;
+        }
+        .tilt-card-glare {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border-radius: inherit;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.35) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            mix-blend-mode: overlay;
+            z-index: 10;
+        }
+        .tilt-card:hover .tilt-card-glare {
+            opacity: 1;
+        }
+
+        /* Interactive Draggable Stickers */
+        .draggable-sticker {
+            user-select: none;
+            touch-action: none;
+            cursor: grab !important;
+            transition: transform 0.12s ease-out, box-shadow 0.15s ease;
+        }
+        .draggable-sticker:active {
+            cursor: grabbing !important;
+            transform: scale(1.08) rotate(-4deg);
+            box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+            z-index: 50;
+        }
+
+        /* Micro-interactions */
+        .btn-press {
+            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+        }
+        .btn-press:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .btn-press:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1);
+        }
+
+        /* Card Hover */
+        .hover-lift {
+            transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.25s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+        }
+
+        /* Accordion Smooth Height */
+        .faq-content {
+            transition: max-height 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.25s ease;
+        }
+
+        /* Vercel Gliding Oval Pill Indicator System */
+        .vercel-pill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 9999px;
+            pointer-events: none;
+            will-change: transform, width, height, opacity;
+            transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1), 
+                        width 220ms cubic-bezier(0.23, 1, 0.32, 1), 
+                        height 220ms cubic-bezier(0.23, 1, 0.32, 1), 
+                        opacity 160ms ease-out;
+        }
+
+        /* Glitch-Free Card Filter States (No transform conflicts with 3D gyroscopic tilt!) */
+        .dash-card-item, .tmpl-card-item {
+            transition: opacity 280ms cubic-bezier(0.23, 1, 0.32, 1), filter 280ms ease, border-color 280ms ease, box-shadow 280ms ease;
+        }
+        .card-dimmed {
+            opacity: 0.2 !important;
+            filter: grayscale(85%) brightness(0.7) !important;
+            pointer-events: none !important;
+        }
+        .card-highlighted {
+            opacity: 1 !important;
+            filter: none !important;
+            pointer-events: auto !important;
+            border-color: #FAFF00 !important;
+            box-shadow: 0 0 22px rgba(250, 255, 0, 0.4), 6px 6px 0px 0px rgba(0, 0, 0, 1) !important;
+        }
+
+        /* Sticky Full Screen Vertical Scroll Stage */
+        .sticky-stage-panel {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateY(24px) scale(0.96);
+            pointer-events: none;
+            transition: opacity 350ms cubic-bezier(0.23, 1, 0.32, 1), transform 350ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .sticky-stage-panel.active {
+            opacity: 1;
+            transform: translateY(0px) scale(1);
+            pointer-events: auto;
+        }
+        .sticky-text-panel {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: opacity 350ms cubic-bezier(0.23, 1, 0.32, 1), transform 350ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .sticky-text-panel.active {
+            opacity: 1;
+            transform: translateY(0px);
+            pointer-events: auto;
+        }
+
+        /* Emil Kowalski Origin-Aware Modal Transitions */
+        .modal-wrap {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+            transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), visibility 220ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .modal-wrap.modal-active {
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        }
+        .modal-box {
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), opacity 240ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .modal-wrap.modal-active .modal-box {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Tactile Press Feedback */
+        button:active, a.btn-press:active, .dash-tab-btn:active, .tmpl-tab-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Prevent horizontal overflow without breaking position:sticky */
+        html, body {
+            overflow-x: clip;
+        }
+    </style>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased selection:bg-[#FAFF00] selection:text-black" style="overflow-x: clip;">
+
+    <!-- CUSTOM MOUSE CURSOR -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring">
+        <span id="cursor-badge-text">VIEW</span>
+    </div>
+
+    <!-- INTERACTIVE CURSOR-REACTIVE HALFTONE CANVAS BACKGROUND -->
+    <canvas id="halftone-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- FLOATING IMMERSIVE CONTROLS BAR (BOTTOM LEFT) -->
+    <div class="fixed bottom-6 left-6 z-40 flex items-center gap-2 bg-black/90 text-white p-2 rounded-full border-2 border-white/30 backdrop-blur-lg shadow-2xl">
+        <!-- Sound Toggle -->
+        <button id="sound-toggle-btn" onclick="toggleAudio()" class="px-3 py-1.5 rounded-full text-xs font-bold font-mono flex items-center gap-1.5 hover:bg-neutral-800 transition">
+            <span id="sound-icon">🔊</span>
+            <span id="sound-text">SFX: ON</span>
+        </button>
+        <div class="h-4 w-px bg-neutral-700"></div>
+        <!-- Stamp Sticker Easter Egg -->
+        <button onclick="stampStickerRandom()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-[#FAFF00] text-black hover:bg-[#FFE600] transition flex items-center gap-1">
+            <span>✦</span>
+            <span>Drop Sticker</span>
+        </button>
+    </div>
+
+    <!-- 1. STICKY TOP NAVBAR -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-2 border-black transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group" onmouseenter="playTick()">
+                <span class="text-2xl font-black tracking-tight flex items-center gap-2 text-black">
+                    <span class="text-2xl transition-transform group-hover:rotate-45 duration-300">✦</span>
+                    <span>NEOFRAME</span>
+                </span>
+            </a>
+
+            <!-- Navigation Links with Vercel Hover Gliding Oval -->
+            <nav id="navbar-nav" class="relative hidden md:flex items-center p-1 rounded-full bg-neutral-100/80 border border-neutral-200/90 text-sm font-semibold" onmouseleave="handleNavLeave()">
+                <div id="nav-hover-pill" class="vercel-pill bg-white shadow-sm opacity-0"></div>
+                <a href="#features" class="nav-tab-link relative z-10 px-4 py-1.5 rounded-full text-neutral-600 hover:text-black transition-colors" onmouseenter="handleNavHover(this); playTick()">Features</a>
+                <a href="#workflow-tour" class="nav-tab-link relative z-10 px-4 py-1.5 rounded-full text-neutral-600 hover:text-black transition-colors" onmouseenter="handleNavHover(this); playTick()">Workflow</a>
+                <a href="#templates" class="nav-tab-link relative z-10 px-4 py-1.5 rounded-full text-neutral-600 hover:text-black transition-colors" onmouseenter="handleNavHover(this); playTick()">Templates</a>
+                <a href="#pricing" class="nav-tab-link relative z-10 px-4 py-1.5 rounded-full text-neutral-600 hover:text-black transition-colors" onmouseenter="handleNavHover(this); playTick()">Pricing</a>
+                <a href="#faq" class="nav-tab-link relative z-10 px-4 py-1.5 rounded-full text-neutral-600 hover:text-black transition-colors" onmouseenter="handleNavHover(this); playTick()">FAQ</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-5">
+                <button onclick="openSignInModal()" onmouseenter="playTick()" class="text-sm font-bold text-neutral-800 hover:text-black transition">
+                    Sign In
+                </button>
+                <a href="#pricing" onmouseenter="playPop()" class="btn-press bg-black text-white hover:bg-neutral-800 rounded-full px-5 py-2.5 text-sm font-bold transition shadow-md">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section class="relative pt-12 pb-20 md:pt-16 md:pb-28 overflow-hidden bg-white border-b-4 border-black z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left: Hero Headline & CTA -->
+                <div class="lg:col-span-7 z-10">
+                    <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-[80px] font-black tracking-tight leading-[1.04] text-black mb-6">
+                        Turn Ideas<br>
+                        Into Stunning<br>
+                        <span id="hero-badge-target" class="relative inline-block bg-[#FAFF00] px-5 py-1 rounded-2xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-1 transition-colors duration-300">
+                            Designs
+                        </span>
+                    </h1>
+
+                    <p class="text-lg md:text-xl text-neutral-600 font-medium leading-relaxed max-w-xl mb-10">
+                        A modern creative toolkit for students, creators and teams. Design faster, collaborate effortlessly. ship beautiful content — all in one place.
+                    </p>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap items-center gap-4 mb-14">
+                        <a href="#pricing" onmouseenter="playPop()" class="btn-press inline-flex items-center gap-2 bg-black hover:bg-neutral-800 text-white font-bold text-base px-8 py-4 rounded-full transition shadow-lg">
+                            <span>Get Started Free</span>
+                            <span>→</span>
+                        </a>
+                        <button onclick="openDemoModal()" onmouseenter="playTick()" class="btn-press inline-flex items-center gap-2.5 bg-white hover:bg-neutral-50 text-black font-bold text-base px-7 py-4 rounded-full border-2 border-black transition shadow-sm">
+                            <span class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">▶</span>
+                            <span>Watch Demo</span>
+                        </button>
+                    </div>
+
+                    <!-- Metrics / Social Proof Bar -->
+                    <div class="pt-8 border-t-2 border-black/10 flex flex-wrap items-center gap-8 md:gap-12 text-black">
+                        <div>
+                            <div class="text-3xl md:text-4xl font-black tracking-tight">10K+</div>
+                            <div class="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-0.5">Active Creators</div>
+                        </div>
+                        <div class="h-10 w-px bg-neutral-200"></div>
+                        <div>
+                            <div class="text-3xl md:text-4xl font-black tracking-tight flex items-center gap-1.5">
+                                <span>4.9/5</span>
+                                <span class="text-amber-400 text-2xl">★</span>
+                            </div>
+                            <div class="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-0.5">User Rating</div>
+                        </div>
+                        <div class="h-10 w-px bg-neutral-200"></div>
+                        <div>
+                            <div class="text-3xl md:text-4xl font-black tracking-tight">50K+</div>
+                            <div class="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-0.5">Templates</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Custom HD Pop-Art David Artwork with 3D Specular Tilt -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="tilt-card relative w-full max-w-[500px]" data-tilt>
+                        <div class="tilt-card-glare"></div>
+                        
+                        <!-- Main HD Hero Statue Collage -->
+                        <div class="relative rounded-3xl overflow-hidden shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] border-4 border-black bg-white transition-transform duration-300">
+                            <img src="assets/hero-david-collage.jpg" alt="NEOFRAME Pop-Art Classical Statue" class="w-full h-auto object-cover">
+                        </div>
+
+                        <!-- Draggable Interactive Sticker: CREATE FASTER -->
+                        <div id="sticker-create-faster" class="draggable-sticker absolute -top-5 -left-6 bg-white text-black font-marker text-sm px-4 py-2 rounded-lg border-3 border-black -rotate-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] flex items-center gap-1.5 z-20">
+                            <span>⚡</span>
+                            <span>CREATE FASTER</span>
+                        </div>
+
+                        <!-- Draggable Halftone Pop Art Accent Badge -->
+                        <div id="sticker-edition" class="draggable-sticker absolute -bottom-5 -right-5 bg-[#FAFF00] text-black font-black text-xs uppercase tracking-wider px-4 py-2 rounded-xl border-3 border-black rotate-3 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] z-20">
+                            ✦ 2026 EDITION
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. DARK FEATURE & VECTOR-SHARP APP INTERFACE SHOWCASE -->
+    <section id="features" class="py-24 bg-[#0B0C10] text-white relative overflow-hidden bg-halftone-dark border-b-4 border-black z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left: Headline & 4 Feature Badges -->
+                <div class="lg:col-span-5">
+                    <div class="text-xs font-mono font-bold tracking-widest uppercase text-neutral-400 mb-3 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>BUILT FOR MODERN CREATORS</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight text-white mb-6">
+                        Everything you need to create, in one place.
+                    </h2>
+                    <p class="text-neutral-400 text-base leading-relaxed mb-12">
+                        From social media posts to presentations, posters to portfolios — NEOFRAME gives you tools to design without limits.
+                    </p>
+
+                    <!-- 4 Feature Pills (2x2 Grid) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- 1. Lightning Fast -->
+                        <div class="p-5 rounded-2xl bg-neutral-900/90 border border-neutral-800 hover:border-[#FAFF00] transition hover-lift" onmouseenter="playTick()">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg mb-3">
+                                ⚡
+                            </div>
+                            <h3 class="font-bold text-base text-white mb-1">Lightning Fast</h3>
+                            <p class="text-xs text-neutral-400 leading-relaxed">
+                                Create stunning designs in minutes, not hours.
+                            </p>
+                        </div>
+
+                        <!-- 2. Real-time Collaboration -->
+                        <div class="p-5 rounded-2xl bg-neutral-900/90 border border-neutral-800 hover:border-[#00F0FF] transition hover-lift" onmouseenter="playTick()">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-lg mb-3">
+                                👥
+                            </div>
+                            <h3 class="font-bold text-base text-white mb-1">Real-time Collaboration</h3>
+                            <p class="text-xs text-neutral-400 leading-relaxed">
+                                Work together, anywhere in real-time sync.
+                            </p>
+                        </div>
+
+                        <!-- 3. Premium Templates -->
+                        <div class="p-5 rounded-2xl bg-neutral-900/90 border border-neutral-800 hover:border-[#10B981] transition hover-lift" onmouseenter="playTick()">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg mb-3">
+                                🎨
+                            </div>
+                            <h3 class="font-bold text-base text-white mb-1">Premium Templates</h3>
+                            <p class="text-xs text-neutral-400 leading-relaxed">
+                                1000+ ready-to-use creative layouts and styles.
+                            </p>
+                        </div>
+
+                        <!-- 4. Customizable -->
+                        <div class="p-5 rounded-2xl bg-neutral-900/90 border border-neutral-800 hover:border-[#FF0080] transition hover-lift" onmouseenter="playTick()">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg mb-3">
+                                ⚙️
+                            </div>
+                            <h3 class="font-bold text-base text-white mb-1">Customizable</h3>
+                            <p class="text-xs text-neutral-400 leading-relaxed">
+                                Make it truly yours with full creative control.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Interactive Vector-Sharp 3D App Dashboard Mockup -->
+                <div class="lg:col-span-7 relative">
+                    <div class="tilt-card relative rounded-2xl overflow-hidden border-2 border-neutral-700 bg-neutral-950 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)]" data-tilt>
+                        <div class="tilt-card-glare"></div>
+                        
+                        <!-- Top Chrome Bar -->
+                        <div class="px-4 py-3 border-b border-neutral-800 flex items-center justify-between gap-4 bg-neutral-900/90">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                <span class="text-xs font-mono font-bold text-neutral-400 ml-2">app.neoframe.design</span>
+                            </div>
+                            
+                            <!-- Search & Category Tabs with Vercel Gliding Oval -->
+                            <div id="dash-tabs-bar" class="relative flex items-center p-1 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-semibold" onmouseleave="handleDashTabsLeave()">
+                                <div id="dash-active-pill" class="vercel-pill rounded-full bg-white shadow-md"></div>
+                                <div id="dash-hover-pill" class="vercel-pill rounded-full bg-neutral-800/80 opacity-0"></div>
+                                
+                                <button data-cat="all" onclick="selectDashTab('all', this)" onmouseenter="handleDashTabHover(this); playTick()" class="dash-tab-btn relative z-10 px-3.5 py-1 rounded-full text-black font-bold transition-colors duration-200">All</button>
+                                <button data-cat="social" onclick="selectDashTab('social', this)" onmouseenter="handleDashTabHover(this); playTick()" class="dash-tab-btn relative z-10 px-3.5 py-1 rounded-full text-neutral-400 hover:text-white transition-colors duration-200">Social</button>
+                                <button data-cat="posters" onclick="selectDashTab('posters', this)" onmouseenter="handleDashTabHover(this); playTick()" class="dash-tab-btn relative z-10 px-3.5 py-1 rounded-full text-neutral-400 hover:text-white transition-colors duration-200">Posters</button>
+                                <button data-cat="slides" onclick="selectDashTab('slides', this)" onmouseenter="handleDashTabHover(this); playTick()" class="dash-tab-btn relative z-10 px-3.5 py-1 rounded-full text-neutral-400 hover:text-white transition-colors duration-200">Presentations</button>
+                            </div>
+                        </div>
+
+                        <!-- Inner Dashboard Layout: Sidebar + Canvas Gallery -->
+                        <div class="flex h-[420px]">
+                            <!-- Left Mini Sidebar -->
+                            <div class="w-44 border-r border-neutral-800 bg-neutral-900/40 p-4 flex flex-col justify-between hidden sm:flex">
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-1.5 font-bold text-sm text-white">
+                                        <span>✦</span>
+                                        <span>NEOFRAME</span>
+                                    </div>
+                                    <div class="space-y-1 text-xs font-semibold">
+                                        <div class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800/50 cursor-pointer" onmouseenter="playTick()">
+                                            <span>🏠</span> <span>Home</span>
+                                        </div>
+                                        <div class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg bg-neutral-800 text-white font-bold cursor-pointer" onmouseenter="playTick()">
+                                            <span>🖼️</span> <span>Templates</span>
+                                        </div>
+                                        <div class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800/50 cursor-pointer" onmouseenter="playTick()">
+                                            <span>📁</span> <span>Projects</span>
+                                        </div>
+                                        <div class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800/50 cursor-pointer" onmouseenter="playTick()">
+                                            <span>🏷️</span> <span>Brand Kit</span>
+                                        </div>
+                                        <div class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800/50 cursor-pointer" onmouseenter="playTick()">
+                                            <span>👥</span> <span>Team</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-neutral-500 pt-3 border-t border-neutral-800">
+                                    <span>⚙️</span> <span>Settings</span>
+                                </div>
+                            </div>
+
+                            <!-- Right Template Grid Preview -->
+                            <div class="flex-1 p-4 bg-neutral-950 overflow-y-auto">
+                                <div id="dash-grid-cards" class="grid grid-cols-2 gap-3.5 h-full">
+                                    <!-- App Card 1: Tech Event -->
+                                    <div class="dash-card-item rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900 group relative hover:border-[#FAFF00] transition cursor-pointer" data-category="posters" onclick="previewCard('Tech Event Poster', 'assets/card-tech-event.jpg')">
+                                        <img src="assets/card-tech-event.jpg" alt="Tech Event" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                                            <span class="text-[10px] font-bold text-white bg-black/80 px-2 py-0.5 rounded">Cyber Synapse (Poster)</span>
+                                        </div>
+                                    </div>
+                                    <!-- App Card 2: Carousel -->
+                                    <div class="dash-card-item rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900 group relative hover:border-[#FAFF00] transition cursor-pointer" data-category="social" onclick="previewCard('Social Media Carousel', 'assets/card-carousel.jpg')">
+                                        <img src="assets/card-carousel.jpg" alt="Carousel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                                            <span class="text-[10px] font-bold text-white bg-black/80 px-2 py-0.5 rounded">Urban Artifact (Social)</span>
+                                        </div>
+                                    </div>
+                                    <!-- App Card 3: Minimal Presentation -->
+                                    <div class="dash-card-item rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900 group relative hover:border-[#FAFF00] transition cursor-pointer" data-category="slides" onclick="previewCard('Minimal Presentation', 'assets/card-presentation.jpg')">
+                                        <img src="assets/card-presentation.jpg" alt="Presentation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                                            <span class="text-[10px] font-bold text-white bg-black/80 px-2 py-0.5 rounded">Make It Real (Presentation)</span>
+                                        </div>
+                                    </div>
+                                    <!-- App Card 4: Portfolio Cover -->
+                                    <div class="dash-card-item rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900 group relative hover:border-[#FAFF00] transition cursor-pointer" data-category="posters" onclick="previewCard('Portfolio Cover', 'assets/card-portfolio.jpg')">
+                                        <img src="assets/card-portfolio.jpg" alt="Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                                            <span class="text-[10px] font-bold text-white bg-black/80 px-2 py-0.5 rounded">Archetype Works (Editorial)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Draggable Handwritten Doodle Callout -->
+                        <div id="sticker-doodle" class="draggable-sticker absolute bottom-4 left-6 bg-black/90 text-white font-marker text-xs px-4 py-2.5 rounded-lg border-2 border-white/20 -rotate-3 shadow-xl flex items-center gap-2 z-20">
+                            <span class="text-[#FAFF00]">✦</span>
+                            <span>TEMPLATES THAT HIT DIFFERENT</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 4. STICKY FULL SCREEN VERTICAL SCROLL EXPERIENCE (300vh Track) -->
+    <section id="workflow-tour" class="relative bg-black text-white border-b-4 border-black z-20" style="height: 300vh;">
+        <!-- Pinned Sticky 100vh Stage -->
+        <div class="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between p-6 md:p-12 bg-neutral-950 bg-halftone-dark">
+            
+            <!-- Sticky Header Meta -->
+            <div class="max-w-7xl mx-auto w-full flex items-center justify-between border-b border-neutral-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-[#FAFF00] animate-pulse"></span>
+                    <span class="text-xs font-mono font-bold tracking-widest uppercase text-neutral-400">STICKY WORKFLOW TOUR</span>
+                    <span class="hidden sm:inline text-xs font-mono text-neutral-600">[SYS: 60FPS STABLE]</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-mono text-neutral-500">STAGE</span>
+                    <span id="sticky-step-num" class="font-mono text-[#FAFF00] font-black text-sm px-2 py-0.5 rounded bg-neutral-900 border border-neutral-700">01 / 03</span>
+                </div>
+            </div>
+
+            <!-- Main Stage Content (Centered) -->
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center my-auto">
+                
+                <!-- Left: Stepper Indicator & Narrative Text Panels -->
+                <div class="lg:col-span-6 flex gap-6 items-center">
+                    
+                    <!-- Vertical Track with Fill Pill -->
+                    <div class="hidden sm:flex flex-col items-center gap-4 py-2 shrink-0">
+                        <button onclick="scrollToStage(0)" class="sticky-step-btn w-9 h-9 rounded-full bg-[#FAFF00] text-black font-mono font-black text-xs flex items-center justify-center transition-all duration-300 shadow-md">01</button>
+                        <div class="w-1 h-24 bg-neutral-800 rounded-full relative overflow-hidden">
+                            <div id="sticky-scroll-tracker" class="w-full bg-[#FAFF00] rounded-full transition-all duration-150" style="height: 20%;"></div>
+                        </div>
+                        <button onclick="scrollToStage(1)" class="sticky-step-btn w-9 h-9 rounded-full bg-neutral-800 text-neutral-400 font-mono font-bold text-xs flex items-center justify-center transition-all duration-300">02</button>
+                        <div class="w-1 h-24 bg-neutral-800 rounded-full"></div>
+                        <button onclick="scrollToStage(2)" class="sticky-step-btn w-9 h-9 rounded-full bg-neutral-800 text-neutral-400 font-mono font-bold text-xs flex items-center justify-center transition-all duration-300">03</button>
+                    </div>
+
+                    <!-- Stacked Text Panels (Relative Container with smooth crossfading) -->
+                    <div class="relative w-full min-h-[340px] flex items-center">
+                        
+                        <!-- Panel 1: Vector Intelligence -->
+                        <div id="text-stage-0" class="sticky-text-panel active">
+                            <div class="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-[#FAFF00] mb-3 bg-neutral-900 px-3 py-1 rounded-full border border-neutral-700">
+                                <span>✦</span> 01 // VECTOR INTELLIGENCE
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight text-white mb-4">
+                                Turn classical forms into hyper-modern vectors.
+                            </h2>
+                            <p class="text-neutral-400 text-sm sm:text-base leading-relaxed mb-6">
+                                Harness AI-assisted vector composition, geometric precision guides, and generative typography to design 10x faster with complete creative control.
+                            </p>
+                            <div class="flex flex-wrap gap-2 text-xs font-mono">
+                                <span class="px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-300">✓ Sub-pixel Pen Curves</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-300">✓ Auto-Vectorize Artwork</span>
+                                <span class="px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-300">✓ Generative Layouts</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 2: Brand Color Shaders & Swatches -->
+                        <div id="text-stage-1" class="sticky-text-panel">
+                            <div class="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-[#FAFF00] mb-3 bg-neutral-900 px-3 py-1 rounded-full border border-neutral-700">
+                                <span>🎨</span> 02 // DYNAMIC BRAND SHADERS
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight text-white mb-4">
+                                Tools that adapt to your creative workflow.
+                            </h2>
+                            <p class="text-neutral-400 text-sm sm:text-base leading-relaxed mb-6">
+                                Swap global brand styles instantaneously. The reactive shader engine re-renders all vector strokes, halos, and textures in real-time.
+                            </p>
+                            
+                            <!-- Interactive Brand Palette Engine -->
+                            <div class="p-4 rounded-2xl bg-neutral-900 border-2 border-neutral-800 mb-4 inline-block">
+                                <div class="text-[11px] font-mono text-neutral-400 mb-2 flex items-center justify-between gap-4">
+                                    <span>Live Palette Swatcher</span>
+                                    <span id="current-color-name" class="font-bold text-[#FAFF00]">Acid Yellow</span>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <button onclick="setThemeAccent('#FAFF00', 'Acid Yellow')" class="w-8 h-8 rounded-full bg-[#FAFF00] border-2 border-white hover:scale-125 transition transform shadow-md" title="Acid Yellow"></button>
+                                    <button onclick="setThemeAccent('#10B981', 'Neon Emerald')" class="w-8 h-8 rounded-full bg-[#10B981] border-2 border-white hover:scale-125 transition transform shadow-md" title="Neon Emerald"></button>
+                                    <button onclick="setThemeAccent('#00F0FF', 'Electric Cyan')" class="w-8 h-8 rounded-full bg-[#00F0FF] border-2 border-white hover:scale-125 transition transform shadow-md" title="Electric Cyan"></button>
+                                    <button onclick="setThemeAccent('#8B5CF6', 'Ultra Purple')" class="w-8 h-8 rounded-full bg-[#8B5CF6] border-2 border-white hover:scale-125 transition transform shadow-md" title="Ultra Purple"></button>
+                                    <button onclick="setThemeAccent('#EC4899', 'Hot Pink')" class="w-8 h-8 rounded-full bg-[#EC4899] border-2 border-white hover:scale-125 transition transform shadow-md" title="Hot Pink"></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Panel 3: Production Export Everywhere -->
+                        <div id="text-stage-2" class="sticky-text-panel">
+                            <div class="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-[#FAFF00] mb-3 bg-neutral-900 px-3 py-1 rounded-full border border-neutral-700">
+                                <span>⚡</span> 03 // ZERO-LOSS EXPORT
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight text-white mb-4">
+                                Export everywhere. Without compression loss.
+                            </h2>
+                            <p class="text-neutral-400 text-sm sm:text-base leading-relaxed mb-6">
+                                Production-ready SVGs, retina 4K PNGs, and direct component code. Zero pixelation, zero compression loss, and infinite scalability across all devices.
+                            </p>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <button onclick="showToast('SVG Downloaded', 'Exported vector package with clean semantic paths', '⚡')" class="px-5 py-2.5 rounded-full bg-[#FAFF00] text-black font-extrabold text-xs hover:bg-[#FFE600] transition active:scale-95 shadow-[2px_2px_0px_#fff]">
+                                    Download SVG →
+                                </button>
+                                <button onclick="showToast('Code Copied', 'Copied React + Tailwind SVG component to clipboard', '📋')" class="px-5 py-2.5 rounded-full bg-neutral-800 text-white font-bold text-xs hover:bg-neutral-700 transition active:scale-95 border border-neutral-700">
+                                    Copy Code
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right: Synchronized 3D Stage Visuals -->
+                <div class="lg:col-span-6 relative flex justify-center">
+                    <div class="relative w-full max-w-[500px] aspect-[4/3] sm:aspect-square">
+                        
+                        <!-- Visual Panel 1: Vector Blueprint David Collage -->
+                        <div id="visual-stage-0" class="sticky-stage-panel active tilt-card" data-tilt>
+                            <div class="tilt-card-glare"></div>
+                            <div class="relative rounded-3xl overflow-hidden border-4 border-neutral-700 bg-neutral-900 p-2 shadow-[12px_12px_0px_0px_rgba(250,255,0,0.3)]">
+                                <img src="assets/hero-david-collage.jpg" alt="Vector Intelligence" class="w-full h-full object-cover rounded-2xl">
+                                <div class="absolute top-4 left-4 bg-black/85 backdrop-blur border border-white/20 px-3 py-1.5 rounded-lg text-[10px] font-mono text-[#FAFF00] flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-[#FAFF00]"></span>
+                                    <span>VECTOR NODE: ACTIVE [X: 512, Y: 256]</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Panel 2: Impasto Yellow Eye Stroke with Live Palette -->
+                        <div id="visual-stage-1" class="sticky-stage-panel tilt-card" data-tilt>
+                            <div class="tilt-card-glare"></div>
+                            <div class="relative rounded-3xl overflow-hidden border-4 border-neutral-700 bg-neutral-900 p-2 shadow-[12px_12px_0px_0px_rgba(250,255,0,0.3)]">
+                                <img id="workflow-art" src="assets/david-workflow.jpg" alt="Brand Color Shaders" class="w-full h-full object-cover rounded-2xl">
+                                <div class="absolute bottom-4 left-4 bg-black/85 backdrop-blur border border-white/20 px-3 py-1.5 rounded-lg text-[10px] font-mono text-white flex items-center gap-2">
+                                    <span>🎨</span>
+                                    <span>REACTIVE SHADER COMPOSER</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Panel 3: Production Code & Studio Preview -->
+                        <div id="visual-stage-2" class="sticky-stage-panel tilt-card" data-tilt>
+                            <div class="tilt-card-glare"></div>
+                            <div class="relative rounded-3xl overflow-hidden border-4 border-neutral-700 bg-neutral-900 p-4 shadow-[12px_12px_0px_0px_rgba(250,255,0,0.3)] flex flex-col justify-between h-full">
+                                <div class="flex items-center justify-between pb-3 border-b border-neutral-800">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                                        <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                                        <span class="text-xs font-mono text-neutral-400 ml-2">export-manifest.svg</span>
+                                    </div>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">READY</span>
+                                </div>
+                                <div class="my-4 bg-black p-4 rounded-xl border border-neutral-800 font-mono text-xs text-neutral-300 leading-relaxed overflow-x-auto">
+                                    <div class="text-neutral-500">// Production Vector Tree</div>
+                                    <div>&lt;<span class="text-pink-400">svg</span> <span class="text-amber-400">viewBox</span>=<span class="text-emerald-400">"0 0 1024 1024"</span> <span class="text-amber-400">fill</span>=<span class="text-emerald-400">"none"</span>&gt;</div>
+                                    <div class="pl-4">&lt;<span class="text-pink-400">path</span> <span class="text-amber-400">d</span>=<span class="text-emerald-400">"M512 0 L1024 512 L512 1024 Z"</span> <span class="text-amber-400">fill</span>=<span class="text-[#FAFF00]">"var(--brand)"</span> /&gt;</div>
+                                    <div class="pl-4">&lt;<span class="text-pink-400">circle</span> <span class="text-amber-400">cx</span>=<span class="text-emerald-400">"512"</span> <span class="text-amber-400">cy</span>=<span class="text-emerald-400">"512"</span> <span class="text-amber-400">r</span>=<span class="text-emerald-400">"256"</span> /&gt;</div>
+                                    <div>&lt;/<span class="text-pink-400">svg</span>&gt;</div>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-neutral-400 font-mono pt-2 border-t border-neutral-800">
+                                    <span>Resolution: 1024×1024 Vector</span>
+                                    <span>Size: 4.2 KB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sticky Bottom Scroller Indicator Bar -->
+            <div class="max-w-7xl mx-auto w-full flex items-center justify-between text-xs font-mono text-neutral-500 pt-3 border-t border-neutral-800">
+                <div class="flex items-center gap-2">
+                    <span class="animate-bounce">↓</span>
+                    <span>Scroll vertically to experience full workflow transition</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="scrollToStage(0)" class="hover:text-white transition">01 Vector</button>
+                    <span>/</span>
+                    <button onclick="scrollToStage(1)" class="hover:text-white transition">02 Palette</button>
+                    <span>/</span>
+                    <button onclick="scrollToStage(2)" class="hover:text-white transition">03 Export</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 5. SATURATED ACID-YELLOW SECTION WITH 4 INDIVIDUAL HOVER CARDS -->
+    <section id="templates" class="py-24 bg-[#FFE600] text-black relative overflow-hidden bg-halftone-yellow border-b-4 border-black z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <!-- Left: Headline & Browse CTA -->
+                <div class="lg:col-span-4">
+                    <div class="text-xs font-mono font-bold tracking-widest uppercase text-neutral-800 mb-3">
+                        TEMPLATES FOR EVERYTHING
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tight leading-tight text-black mb-6">
+                        Start with a template, make it yours.
+                    </h2>
+                    <p class="text-neutral-900 text-base font-medium leading-relaxed mb-8">
+                        Choose from 1000+ professionally designed templates for social media, posters, presentations, resumes, and more.
+                    </p>
+                    <a href="#pricing" onmouseenter="playPop()" class="btn-press inline-flex items-center gap-2 bg-black hover:bg-neutral-900 text-white font-bold text-base px-8 py-4 rounded-full transition shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]">
+                        <span>Browse Templates</span>
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- Right: 4 INDIVIDUAL ULTRA-HD 3D HOVER CARDS WITH VERCEL TABS -->
+                <div class="lg:col-span-8 flex flex-col gap-6">
+                    
+                    <!-- Vercel Gliding Oval Tab Bar -->
+                    <div id="tmpl-tabs-bar" class="relative self-start inline-flex items-center p-1.5 rounded-full bg-black/15 border-2 border-black text-xs font-bold" onmouseleave="handleTmplTabsLeave()">
+                        <div id="tmpl-active-pill" class="vercel-pill rounded-full bg-black shadow-md"></div>
+                        <div id="tmpl-hover-pill" class="vercel-pill rounded-full bg-black/15 opacity-0"></div>
+                        
+                        <button data-cat="all" onclick="filterTemplateCards('all', this)" onmouseenter="handleTmplTabHover(this); playTick()" class="tmpl-tab-btn relative z-10 px-4 py-1.5 rounded-full text-white font-black transition-colors duration-200">All (4)</button>
+                        <button data-cat="posters" onclick="filterTemplateCards('posters', this)" onmouseenter="handleTmplTabHover(this); playTick()" class="tmpl-tab-btn relative z-10 px-4 py-1.5 rounded-full text-black hover:text-neutral-800 transition-colors duration-200">Posters</button>
+                        <button data-cat="social" onclick="filterTemplateCards('social', this)" onmouseenter="handleTmplTabHover(this); playTick()" class="tmpl-tab-btn relative z-10 px-4 py-1.5 rounded-full text-black hover:text-neutral-800 transition-colors duration-200">Social</button>
+                        <button data-cat="editorial" onclick="filterTemplateCards('editorial', this)" onmouseenter="handleTmplTabHover(this); playTick()" class="tmpl-tab-btn relative z-10 px-4 py-1.5 rounded-full text-black hover:text-neutral-800 transition-colors duration-200">Editorial</button>
+                    </div>
+
+                    <div id="tmpl-cards-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        
+                        <!-- Hover Card 1: Tech Event Poster -->
+                        <div class="tmpl-card-item tilt-card rounded-2xl border-3 border-black bg-white overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] cursor-pointer group flex flex-col justify-between hover-card-target" data-category="posters" data-tilt onclick="previewCard('Tech Event Poster', 'assets/card-tech-event.jpg')">
+                            <div class="tilt-card-glare"></div>
+                            <div class="relative overflow-hidden aspect-[3/4] bg-black">
+                                <img src="assets/card-tech-event.jpg" alt="Tech Event Poster" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <span class="bg-[#FAFF00] text-black text-xs font-black px-3 py-1.5 rounded-full border border-black shadow">Preview</span>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-white border-t-2 border-black">
+                                <h4 class="font-black text-xs text-black leading-tight">Tech Event</h4>
+                                <p class="text-[11px] font-bold text-neutral-500">Poster</p>
+                            </div>
+                        </div>
+
+                        <!-- Hover Card 2: Social Media Carousel -->
+                        <div class="tmpl-card-item tilt-card rounded-2xl border-3 border-black bg-white overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] cursor-pointer group flex flex-col justify-between hover-card-target" data-category="social" data-tilt onclick="previewCard('Social Media Carousel', 'assets/card-carousel.jpg')">
+                            <div class="tilt-card-glare"></div>
+                            <div class="relative overflow-hidden aspect-[3/4] bg-black">
+                                <img src="assets/card-carousel.jpg" alt="Social Media Carousel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <span class="bg-[#FAFF00] text-black text-xs font-black px-3 py-1.5 rounded-full border border-black shadow">Preview</span>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-white border-t-2 border-black">
+                                <h4 class="font-black text-xs text-black leading-tight">Social Media</h4>
+                                <p class="text-[11px] font-bold text-neutral-500">Carousel</p>
+                            </div>
+                        </div>
+
+                        <!-- Hover Card 3: Minimal Presentation -->
+                        <div class="tmpl-card-item tilt-card rounded-2xl border-3 border-black bg-white overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] cursor-pointer group flex flex-col justify-between hover-card-target" data-category="editorial" data-tilt onclick="previewCard('Minimal Presentation', 'assets/card-presentation.jpg')">
+                            <div class="tilt-card-glare"></div>
+                            <div class="relative overflow-hidden aspect-[3/4] bg-black">
+                                <img src="assets/card-presentation.jpg" alt="Minimal Presentation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <span class="bg-[#FAFF00] text-black text-xs font-black px-3 py-1.5 rounded-full border border-black shadow">Preview</span>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-white border-t-2 border-black">
+                                <h4 class="font-black text-xs text-black leading-tight">Minimal</h4>
+                                <p class="text-[11px] font-bold text-neutral-500">Presentation</p>
+                            </div>
+                        </div>
+
+                        <!-- Hover Card 4: Portfolio Cover -->
+                        <div class="tmpl-card-item tilt-card rounded-2xl border-3 border-black bg-white overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] cursor-pointer group flex flex-col justify-between hover-card-target" data-category="editorial" data-tilt onclick="previewCard('Portfolio Cover', 'assets/card-portfolio.jpg')">
+                            <div class="tilt-card-glare"></div>
+                            <div class="relative overflow-hidden aspect-[3/4] bg-black">
+                                <img src="assets/card-portfolio.jpg" alt="Portfolio Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <span class="bg-[#FAFF00] text-black text-xs font-black px-3 py-1.5 rounded-full border border-black shadow">Preview</span>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-white border-t-2 border-black">
+                                <h4 class="font-black text-xs text-black leading-tight">Portfolio</h4>
+                                <p class="text-[11px] font-bold text-neutral-500">Cover</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 6. PRICING SECTION -->
+    <section id="pricing" class="py-24 bg-white relative overflow-hidden bg-halftone-dots border-b-4 border-black z-10">
+        <div class="max-w-6xl mx-auto px-6">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <div class="text-xs font-mono font-bold tracking-widest uppercase text-neutral-400 mb-3">
+                    PRICING
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black tracking-tight text-black mb-4">
+                    Simple, transparent pricing.
+                </h2>
+                <p class="text-neutral-600 text-base md:text-lg">
+                    Choose the plan that fits your creative journey.
+                </p>
+
+                <!-- Billing Frequency Toggle Switch with Vercel Gliding Oval -->
+                <div id="billing-tab-bar" class="mt-8 relative inline-flex items-center p-1.5 rounded-full bg-neutral-100 border-2 border-black shadow-[4px_4px_0px_#000]">
+                    <!-- Vercel Gliding Black Oval Pill -->
+                    <div id="billing-active-pill" class="vercel-pill rounded-full bg-black shadow-sm"></div>
+                    
+                    <button id="btn-billing-monthly" onclick="setBilling('monthly', this)" onmouseenter="playTick()" class="relative z-10 px-5 py-2 rounded-full font-bold text-xs text-white transition-colors duration-200">
+                        Monthly
+                    </button>
+                    <button id="btn-billing-annual" onclick="setBilling('annual', this)" onmouseenter="playTick()" class="relative z-10 px-5 py-2 rounded-full font-bold text-xs text-neutral-700 hover:text-black transition-colors duration-200 flex items-center gap-1.5">
+                        <span>Annual</span>
+                        <span class="bg-[#FAFF00] text-black font-extrabold text-[10px] px-2 py-0.5 rounded-full border border-black shadow-[1px_1px_0px_#000]">Save 20%</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3-Tier Pricing Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+                
+                <!-- 1. Free Tier -->
+                <div class="p-8 rounded-3xl bg-white border-2 border-neutral-300 flex flex-col justify-between hover-lift">
+                    <div>
+                        <h3 class="text-2xl font-black text-black mb-1">Free</h3>
+                        <div class="flex items-baseline gap-1 my-4">
+                            <span class="text-4xl md:text-5xl font-black text-black">₹0</span>
+                            <span class="text-neutral-500 font-medium text-sm">/ month</span>
+                        </div>
+                        <p class="text-xs text-neutral-600 leading-relaxed mb-8">
+                            Get started with essential tools and templates.
+                        </p>
+                        
+                        <ul class="space-y-3.5 text-sm text-neutral-800 mb-8">
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>100+ templates</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Basic editing tools</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Export in standard quality</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Community support</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button onclick="selectPlan('Free')" onmouseenter="playTick()" class="btn-press w-full py-3.5 rounded-full border-2 border-black text-black font-bold text-sm hover:bg-neutral-100 transition">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- 2. Pro Tier (MOST POPULAR) -->
+                <div class="p-8 rounded-3xl bg-white border-4 border-black relative flex flex-col justify-between shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover-lift">
+                    <!-- Most Popular Badge -->
+                    <div class="absolute -top-4 right-8 bg-[#8B5CF6] text-white font-extrabold text-[11px] tracking-wider uppercase px-4 py-1.5 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        MOST POPULAR
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-black text-black mb-1">Pro</h3>
+                        <div class="flex items-baseline gap-1 my-4">
+                            <span id="price-pro" class="text-4xl md:text-5xl font-black text-black transition-all">₹499</span>
+                            <span class="text-neutral-500 font-medium text-sm">/ month</span>
+                        </div>
+                        <p class="text-xs text-neutral-600 leading-relaxed mb-8">
+                            Unlock premium templates, AI features and more.
+                        </p>
+
+                        <ul class="space-y-3.5 text-sm font-semibold text-neutral-900 mb-8">
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>1000+ premium templates</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>AI design assistant</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Brand kits & custom styles</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Export in high quality</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Priority support</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button onclick="selectPlan('Pro')" onmouseenter="playPop()" class="btn-press w-full py-4 rounded-full bg-black hover:bg-neutral-900 text-white font-bold text-sm transition shadow-lg">
+                        Start Pro Plan
+                    </button>
+                </div>
+
+                <!-- 3. Team Tier -->
+                <div class="p-8 rounded-3xl bg-white border-2 border-neutral-300 flex flex-col justify-between hover-lift">
+                    <div>
+                        <h3 class="text-2xl font-black text-black mb-1">Team</h3>
+                        <div class="flex items-baseline gap-1 my-4">
+                            <span id="price-team" class="text-4xl md:text-5xl font-black text-black transition-all">₹1,499</span>
+                            <span class="text-neutral-500 font-medium text-sm">/ month</span>
+                        </div>
+                        <p class="text-xs text-neutral-600 leading-relaxed mb-8">
+                            For teams and organizations that create together.
+                        </p>
+
+                        <ul class="space-y-3.5 text-sm text-neutral-800 mb-8">
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Everything in Pro</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Real-time collaboration</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Team shared workspaces</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Admin controls</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full bg-neutral-100 text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                <span>Dedicated support</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button onclick="selectPlan('Team')" onmouseenter="playTick()" class="btn-press w-full py-3.5 rounded-full border-2 border-black text-black font-bold text-sm hover:bg-neutral-100 transition">
+                        Contact Sales
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 7. DARK TESTIMONIALS SECTION -->
+    <section class="py-24 bg-[#0B0C10] text-white relative overflow-hidden bg-halftone-dark border-b-4 border-black z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <!-- Header with Slider Arrows -->
+            <div class="flex flex-wrap items-end justify-between gap-6 mb-16">
+                <div>
+                    <div class="text-xs font-mono font-bold tracking-widest uppercase text-neutral-400 mb-3">
+                        LOVED BY CREATORS
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-3">
+                        Creators love NEOFRAME.
+                    </h2>
+                    <p class="text-neutral-400 text-base max-w-xl">
+                        Join thousands of students, creators and teams who create faster with NEOFRAME.
+                    </p>
+                </div>
+
+                <!-- Navigation Arrow Buttons -->
+                <div class="flex items-center gap-3">
+                    <button onclick="prevTestimonial()" onmouseenter="playTick()" class="w-12 h-12 rounded-full border-2 border-neutral-700 bg-neutral-900 text-white flex items-center justify-center hover:bg-neutral-800 hover:border-white transition">
+                        ←
+                    </button>
+                    <button onclick="nextTestimonial()" onmouseenter="playTick()" class="w-12 h-12 rounded-full border-2 border-neutral-700 bg-neutral-900 text-white flex items-center justify-center hover:bg-neutral-800 hover:border-white transition">
+                        →
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3 Testimonial Cards Grid -->
+            <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 transition-all duration-300">
+                
+                <!-- Testimonial 1 -->
+                <div class="p-8 rounded-3xl bg-neutral-900/90 border border-neutral-800 flex flex-col justify-between hover-lift">
+                    <p class="text-base text-neutral-200 leading-relaxed mb-8 font-medium">
+                        "NEOFRAME completely changed how I make content. It's fast, clean and super easy to use!"
+                    </p>
+                    <div class="flex items-center justify-between pt-6 border-t border-neutral-800">
+                        <div class="flex items-center gap-3">
+                            <img src="assets/avatar-aarav.png" alt="Aarav Mehta" class="w-10 h-10 rounded-full border border-neutral-700 object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Aarav Mehta</h4>
+                                <p class="text-xs text-neutral-400">Student & Creator</p>
+                            </div>
+                        </div>
+                        <div class="text-amber-400 text-sm tracking-wider">★★★★★</div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="p-8 rounded-3xl bg-neutral-900/90 border border-neutral-800 flex flex-col justify-between hover-lift">
+                    <p class="text-base text-neutral-200 leading-relaxed mb-8 font-medium">
+                        "The templates are next level. I made my entire college fest branding in a day!"
+                    </p>
+                    <div class="flex items-center justify-between pt-6 border-t border-neutral-800">
+                        <div class="flex items-center gap-3">
+                            <img src="assets/avatar-riya.png" alt="Riya Sharma" class="w-10 h-10 rounded-full border border-neutral-700 object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Riya Sharma</h4>
+                                <p class="text-xs text-neutral-400">Design Lead, College Fest</p>
+                            </div>
+                        </div>
+                        <div class="text-amber-400 text-sm tracking-wider">★★★★★</div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="p-8 rounded-3xl bg-neutral-900/90 border border-neutral-800 flex flex-col justify-between hover-lift">
+                    <p class="text-base text-neutral-200 leading-relaxed mb-8 font-medium">
+                        "Clean, powerful and perfect for teams. We use it for all our social media and posters."
+                    </p>
+                    <div class="flex items-center justify-between pt-6 border-t border-neutral-800">
+                        <div class="flex items-center gap-3">
+                            <img src="assets/avatar-karan.png" alt="Karan Patil" class="w-10 h-10 rounded-full border border-neutral-700 object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Karan Patil</h4>
+                                <p class="text-xs text-neutral-400">Tech Club President</p>
+                            </div>
+                        </div>
+                        <div class="text-amber-400 text-sm tracking-wider">★★★★★</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 8. CLEAN WHITE FAQ ACCORDION SECTION -->
+    <section id="faq" class="py-24 bg-white relative overflow-hidden bg-halftone-dots border-b-4 border-black z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                
+                <!-- Left Title -->
+                <div class="lg:col-span-4">
+                    <div class="text-xs font-mono font-bold tracking-widest uppercase text-neutral-400 mb-3">
+                        FAQ
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight text-black mb-4">
+                        Frequently asked questions.
+                    </h2>
+                    <p class="text-neutral-600 text-sm leading-relaxed mb-6">
+                        Everything you need to know about the product, licensing, and student discounts.
+                    </p>
+                    <a href="mailto:support@neoframe.design" onmouseenter="playTick()" class="inline-flex items-center gap-1.5 text-xs font-bold text-black hover:underline">
+                        <span>Have more questions? Contact support</span>
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- Right Accordion List -->
+                <div class="lg:col-span-8 space-y-4">
+                    
+                    <!-- Item 1 -->
+                    <div class="border-b-2 border-neutral-200 pb-4">
+                        <button onclick="toggleFaq(this)" onmouseenter="playTick()" class="w-full py-3 flex items-center justify-between text-left group">
+                            <span class="text-base md:text-lg font-bold text-neutral-900 group-hover:text-black transition">
+                                Is NEOFRAME free to use?
+                            </span>
+                            <span class="faq-icon text-2xl font-mono text-neutral-400 group-hover:text-black transition transform duration-200">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden text-sm text-neutral-600 leading-relaxed pr-6">
+                            <p class="pt-2 pb-3">
+                                Yes! Our Free tier includes 100+ starter templates, essential design tools, and standard exports. You can design and export forever without entering a credit card.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="border-b-2 border-neutral-200 pb-4">
+                        <button onclick="toggleFaq(this)" onmouseenter="playTick()" class="w-full py-3 flex items-center justify-between text-left group">
+                            <span class="text-base md:text-lg font-bold text-neutral-900 group-hover:text-black transition">
+                                Can I use it for commercial projects?
+                            </span>
+                            <span class="faq-icon text-2xl font-mono text-neutral-400 group-hover:text-black transition transform duration-200">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden text-sm text-neutral-600 leading-relaxed pr-6">
+                            <p class="pt-2 pb-3">
+                                Absolutely. All designs created under Pro and Team plans come with a full commercial license for client work, merchandise, advertising, and digital products.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="border-b-2 border-neutral-200 pb-4">
+                        <button onclick="toggleFaq(this)" onmouseenter="playTick()" class="w-full py-3 flex items-center justify-between text-left group">
+                            <span class="text-base md:text-lg font-bold text-neutral-900 group-hover:text-black transition">
+                                Do you offer student discounts?
+                            </span>
+                            <span class="faq-icon text-2xl font-mono text-neutral-400 group-hover:text-black transition transform duration-200">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden text-sm text-neutral-600 leading-relaxed pr-6">
+                            <p class="pt-2 pb-3">
+                                Yes! We love supporting students and educators. Verify your student status with your .edu email or campus ID to get 50% off NEOFRAME Pro.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="border-b-2 border-neutral-200 pb-4">
+                        <button onclick="toggleFaq(this)" onmouseenter="playTick()" class="w-full py-3 flex items-center justify-between text-left group">
+                            <span class="text-base md:text-lg font-bold text-neutral-900 group-hover:text-black transition">
+                                What file formats can I export?
+                            </span>
+                            <span class="faq-icon text-2xl font-mono text-neutral-400 group-hover:text-black transition transform duration-200">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden text-sm text-neutral-600 leading-relaxed pr-6">
+                            <p class="pt-2 pb-3">
+                                You can export in PNG, JPEG, SVG vector format, and print-ready multi-page CMYK PDFs with bleed and crop marks.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="border-b-2 border-neutral-200 pb-4">
+                        <button onclick="toggleFaq(this)" onmouseenter="playTick()" class="w-full py-3 flex items-center justify-between text-left group">
+                            <span class="text-base md:text-lg font-bold text-neutral-900 group-hover:text-black transition">
+                                Can I collaborate with my team?
+                            </span>
+                            <span class="faq-icon text-2xl font-mono text-neutral-400 group-hover:text-black transition transform duration-200">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden text-sm text-neutral-600 leading-relaxed pr-6">
+                            <p class="pt-2 pb-3">
+                                Yes! Team plans feature live real-time multiplayer editing, shared brand kits, font uploads, and role-based permissions.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 9. ELECTRIC CYAN / YELLOW GRADIENT BANNER CTA -->
+    <section class="relative overflow-hidden py-16 md:py-24 border-b-4 border-black z-10" style="background: linear-gradient(135deg, #00F0FF 0%, #FAFF00 100%);">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Left: Headline & Buttons -->
+                <div class="lg:col-span-7 z-10">
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] text-black mb-4">
+                        Ready to create<br>
+                        something amazing?
+                    </h2>
+                    <p class="text-lg md:text-xl font-bold text-neutral-900 mb-8 max-w-lg">
+                        Join thousands of creators and start designing today.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="#pricing" onmouseenter="playPop()" class="btn-press inline-flex items-center gap-2 bg-black hover:bg-neutral-900 text-white font-bold text-base px-8 py-4 rounded-full transition shadow-xl">
+                            <span>Get Started Free</span>
+                            <span>→</span>
+                        </a>
+                        <button onclick="openDemoModal()" onmouseenter="playTick()" class="btn-press inline-flex items-center gap-2.5 bg-white/40 hover:bg-white/60 text-black font-bold text-base px-7 py-4 rounded-full border-2 border-black transition">
+                            <span class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">▶</span>
+                            <span>Watch Demo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Custom HD Pop Art David Bust with IDEAS DESIGN IMPACT sticker -->
+                <div class="lg:col-span-5 relative flex justify-end">
+                    <div class="tilt-card relative w-full max-w-[440px]" data-tilt>
+                        <div class="tilt-card-glare"></div>
+                        <div class="rounded-3xl overflow-hidden border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] bg-white">
+                            <img src="assets/bottom-statue.jpg" alt="Ideas Design Impact Pop Art" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-300">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 10. MULTI-COLUMN MODERN FOOTER -->
+    <footer class="bg-black text-white pt-16 pb-12 z-10 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-10 pb-16 border-b border-neutral-800">
+                
+                <!-- Col 1: Brand Info -->
+                <div class="col-span-2">
+                    <a href="#" class="flex items-center gap-2 mb-4" onmouseenter="playTick()">
+                        <span class="text-2xl font-black tracking-tight text-white flex items-center gap-2">
+                            <span class="text-2xl">✦</span>
+                            <span>NEOFRAME</span>
+                        </span>
+                    </a>
+                    <p class="text-xs text-neutral-400 max-w-sm leading-relaxed mb-6">
+                        A modern creative toolkit for students, creators, and teams. Design faster, collaborate effortlessly, and ship beautiful content.
+                    </p>
+                    <div class="flex items-center gap-3 text-neutral-400 text-sm">
+                        <a href="#" class="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-[#FAFF00] hover:text-black transition font-bold" onmouseenter="playTick()">X</a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-[#FAFF00] hover:text-black transition font-bold" onmouseenter="playTick()">Ig</a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-[#FAFF00] hover:text-black transition font-bold" onmouseenter="playTick()">Dc</a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-[#FAFF00] hover:text-black transition font-bold" onmouseenter="playTick()">Dr</a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Product -->
+                <div>
+                    <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-4">Product</h4>
+                    <ul class="space-y-2.5 text-xs text-neutral-400">
+                        <li><a href="#templates" class="hover:text-white transition" onmouseenter="playTick()">Templates</a></li>
+                        <li><a href="#features" class="hover:text-white transition" onmouseenter="playTick()">Design Tools</a></li>
+                        <li><a href="#features" class="hover:text-white transition" onmouseenter="playTick()">Brand Kit</a></li>
+                        <li><a href="#features" class="hover:text-white transition" onmouseenter="playTick()">AI Assistant</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition" onmouseenter="playTick()">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Resources -->
+                <div>
+                    <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-4">Resources</h4>
+                    <ul class="space-y-2.5 text-xs text-neutral-400">
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Design School</a></li>
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Tutorials</a></li>
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Community</a></li>
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Inspiration</a></li>
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Help Center</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Company -->
+                <div>
+                    <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-4">Company</h4>
+                    <ul class="space-y-2.5 text-xs text-neutral-400">
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition" onmouseenter="playTick()">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-wrap items-center justify-between gap-4 text-xs text-neutral-500 font-mono">
+                <div>© 2026 NEOFRAME Inc. All rights reserved.</div>
+                <div class="flex items-center gap-6">
+                    <span class="flex items-center gap-1.5 text-emerald-400">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Systems Operational</span>
+                    </span>
+                    <span>Designed with love for creators</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE TEMPLATE PREVIEW MODAL -->
+    <div id="preview-modal" class="modal-wrap fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="modal-box bg-neutral-900 border-2 border-neutral-700 rounded-3xl max-w-xl w-full p-6 text-white relative shadow-2xl">
+            <button onclick="closeCardPreview()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-700 flex items-center justify-center font-bold">
+                ✕
+            </button>
+            <div class="flex items-center gap-2 mb-3">
+                <span class="text-xl text-[#FAFF00]">✦</span>
+                <h3 id="preview-title" class="text-xl font-black">Template Preview</h3>
+            </div>
+            <div class="aspect-[3/4] bg-black rounded-2xl overflow-hidden border border-neutral-800 mb-4">
+                <img id="preview-img" src="" alt="Preview" class="w-full h-full object-cover">
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-xs text-neutral-400">Includes vector layers, editable text & fonts</span>
+                <button onclick="showToast('Template Initialized', 'Loaded vector canvas in Studio sandbox', '⚡'); closeCardPreview();" class="px-5 py-2.5 rounded-full bg-[#FAFF00] text-black font-extrabold text-xs hover:bg-[#FFE600] transition active:scale-95 shadow-[2px_2px_0px_#000]">
+                    Use This Template →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE WATCH DEMO MODAL -->
+    <div id="demo-modal" class="modal-wrap fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="modal-box bg-neutral-900 border-2 border-neutral-700 rounded-3xl max-w-3xl w-full p-6 text-white relative shadow-2xl">
+            <button onclick="closeDemoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-700 flex items-center justify-center font-bold">
+                ✕
+            </button>
+            <div class="flex items-center gap-2 mb-4">
+                <span class="text-xl text-[#FAFF00]">✦</span>
+                <h3 class="text-xl font-black">NEOFRAME Interactive Creative Canvas</h3>
+            </div>
+            <div class="aspect-video bg-neutral-950 rounded-2xl border border-neutral-800 flex flex-col items-center justify-center text-center p-8 relative overflow-hidden">
+                <div class="w-16 h-16 rounded-full bg-[#FAFF00] text-black flex items-center justify-center text-2xl font-bold mb-4 shadow-xl animate-pulse">
+                    ▶
+                </div>
+                <h4 class="text-xl font-bold mb-2">Interactive Walkthrough Active</h4>
+                <p class="text-xs text-neutral-400 max-w-md mb-6">
+                    Explore real-time multiplayer cursors, vector pen manipulation, and one-click SVG export in the live sandbox.
+                </p>
+                <div class="flex items-center gap-3">
+                    <button onclick="showToast('Live Sandbox Active', 'Loaded real-time WebGL canvas and vector toolkit', '🚀'); closeDemoModal();" class="px-5 py-2.5 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition active:scale-95">
+                        Launch Sandbox
+                    </button>
+                    <button onclick="closeDemoModal()" class="px-5 py-2.5 rounded-full bg-neutral-800 text-white font-bold text-xs hover:bg-neutral-700 transition">
+                        Close Preview
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIGN IN MODAL -->
+    <div id="signin-modal" class="modal-wrap fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="modal-box bg-white border-4 border-black rounded-3xl max-w-md w-full p-8 text-black relative shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <button onclick="closeSignInModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-neutral-100 text-black hover:bg-neutral-200 flex items-center justify-center font-bold">
+                ✕
+            </button>
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl text-black">✦</span>
+                <h3 class="text-2xl font-black">Welcome Back</h3>
+            </div>
+            <p class="text-xs text-neutral-500 mb-6">Sign in to your NEOFRAME creative workspace.</p>
+            <form onsubmit="event.preventDefault(); showToast('Session Authenticated', 'Welcome back to your creative cloud workspace', '✓'); closeSignInModal();" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase mb-1">Email address</label>
+                    <input type="email" required placeholder="you@creative.com" class="w-full px-4 py-2.5 rounded-xl border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#FAFF00] text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase mb-1">Password</label>
+                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#FAFF00] text-sm">
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-full bg-black text-white font-bold text-sm hover:bg-neutral-800 transition transform hover:scale-[1.02] active:scale-95 shadow-[4px_4px_0px_#FAFF00]">
+                    Sign In →
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- NEO-BRUTALIST FLOATING TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none max-w-sm"></div>
+
+    <!-- CLIENT SCRIPT: MOTION, 3D TILT, SOUND & DRAGGABLE STICKERS -->
+    <script>
+        // ============================================================
+        // 1. TACTILE AUDIO SYNTHESIZER (Web Audio API Haptics)
+        // ============================================================
+        let audioCtx = null;
+        let audioEnabled = true;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playTick() {
+            if (!audioEnabled) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.03);
+            gain.gain.setValueAtTime(0.04, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.03);
+        }
+
+        function playPop() {
+            if (!audioEnabled) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(320, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(850, ctx.currentTime + 0.06);
+            gain.gain.setValueAtTime(0.08, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.06);
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const icon = document.getElementById('sound-icon');
+            const txt = document.getElementById('sound-text');
+            if (audioEnabled) {
+                icon.innerText = '🔊';
+                txt.innerText = 'SFX: ON';
+                playPop();
+            } else {
+                icon.innerText = '🔇';
+                txt.innerText = 'SFX: OFF';
+            }
+        }
+
+        // ============================================================
+        // 2. INTERACTIVE MAGNETIC MOUSE CURSOR
+        // ============================================================
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        function animateCursor() {
+            // Spring damping equation
+            ringX += (mouseX - ringX) * 0.18;
+            ringY += (mouseY - ringY) * 0.18;
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor state morphing listeners
+        document.querySelectorAll('button, a, input').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('cursor-active'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('cursor-active'));
+        });
+
+        document.querySelectorAll('.hover-card-target').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('cursor-view'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('cursor-view'));
+        });
+
+        // ============================================================
+        // 3. 3D GYROSCOPIC SPECULAR CARD TILT
+        // ============================================================
+        document.querySelectorAll('[data-tilt]').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                if (card.classList.contains('card-dimmed')) return;
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+                card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+
+        // ============================================================
+        // 4. INTERACTIVE HALFTONE PARTICLE CANVAS (Repel Physics)
+        // ============================================================
+        const canvas = document.getElementById('halftone-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initDots();
+        });
+
+        let dots = [];
+        const spacing = 36;
+
+        function initDots() {
+            dots = [];
+            for (let x = 0; x < width + spacing; x += spacing) {
+                for (let y = 0; y < height + spacing; y += spacing) {
+                    dots.push({
+                        originX: x,
+                        originY: y,
+                        x: x,
+                        y: y,
+                        radius: 2,
+                        vx: 0,
+                        vy: 0
+                    });
+                }
+            }
+        }
+        initDots();
+
+        function renderHalftone() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = '#000000';
+
+            const forceRadius = 140;
+
+            for (let i = 0; i < dots.length; i++) {
+                const dot = dots[i];
+                const dx = mouseX - dot.x;
+                const dy = mouseY - dot.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < forceRadius) {
+                    const angle = Math.atan2(dy, dx);
+                    const force = (forceRadius - dist) / forceRadius;
+                    dot.vx -= Math.cos(angle) * force * 4;
+                    dot.vy -= Math.sin(angle) * force * 4;
+                }
+
+                // Spring back to origin
+                dot.vx += (dot.originX - dot.x) * 0.08;
+                dot.vy += (dot.originY - dot.y) * 0.08;
+                dot.vx *= 0.82;
+                dot.vy *= 0.82;
+
+                dot.x += dot.vx;
+                dot.y += dot.vy;
+
+                const currentDist = Math.sqrt((dot.originX - dot.x) ** 2 + (dot.originY - dot.y) ** 2);
+                const currentRadius = Math.min(4.5, Math.max(1.5, 2 + currentDist * 0.1));
+
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, currentRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            requestAnimationFrame(renderHalftone);
+        }
+        renderHalftone();
+
+        // ============================================================
+        // 5. DRAGGABLE PHYSICS STICKERS
+        // ============================================================
+        function makeDraggable(el) {
+            let isDragging = false;
+            let startX, startY, initialLeft, initialTop;
+
+            el.addEventListener('pointerdown', (e) => {
+                isDragging = true;
+                el.setPointerCapture(e.pointerId);
+                startX = e.clientX;
+                startY = e.clientY;
+                const rect = el.getBoundingClientRect();
+                initialLeft = rect.left;
+                initialTop = rect.top;
+                el.style.position = 'fixed';
+                el.style.left = `${initialLeft}px`;
+                el.style.top = `${initialTop}px`;
+                el.style.margin = '0';
+                playPop();
+            });
+
+            el.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                el.style.left = `${initialLeft + dx}px`;
+                el.style.top = `${initialTop + dy}px`;
+            });
+
+            el.addEventListener('pointerup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                el.releasePointerCapture(e.pointerId);
+                playTick();
+            });
+        }
+
+        document.querySelectorAll('.draggable-sticker').forEach(makeDraggable);
+
+        // Stamp Random Sticker Easter Egg
+        const STICKER_PRESETS = [
+            { text: '✦ 100% ACID', bg: '#FAFF00', color: '#000', rot: '-8deg' },
+            { text: '🔥 RAW CRAFT', bg: '#FF0080', color: '#FFF', rot: '6deg' },
+            { text: '⚡ FAST AS HELL', bg: '#00F0FF', color: '#000', rot: '-4deg' },
+            { text: '👁️ MAKE IT REAL', bg: '#000', color: '#FAFF00', rot: '5deg' }
+        ];
+
+        function stampStickerRandom() {
+            const p = STICKER_PRESETS[Math.floor(Math.random() * STICKER_PRESETS.length)];
+            const div = document.createElement('div');
+            div.className = 'draggable-sticker fixed font-marker text-sm px-4 py-2 rounded-xl border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] z-50';
+            div.style.backgroundColor = p.bg;
+            div.style.color = p.color;
+            div.style.transform = `rotate(${p.rot})`;
+            div.style.left = `${Math.min(window.innerWidth - 180, Math.max(40, mouseX - 60))}px`;
+            div.style.top = `${Math.min(window.innerHeight - 80, Math.max(40, mouseY - 20))}px`;
+            div.innerText = p.text;
+            document.body.appendChild(div);
+            makeDraggable(div);
+            playPop();
+        }
+
+        // ============================================================
+        // 6. LIVE BRAND COLOR SWITCHER SHADER
+        // ============================================================
+        function setThemeAccent(hex, name) {
+            document.documentElement.style.setProperty('--brand-accent', hex);
+            
+            const badge = document.getElementById('hero-badge-target');
+            if (badge) {
+                badge.style.backgroundColor = hex;
+            }
+
+            const nameEl = document.getElementById('current-color-name');
+            if (nameEl) {
+                nameEl.innerText = name;
+                nameEl.style.color = hex;
+            }
+
+            cursorDot.style.backgroundColor = hex;
+            playPop();
+        }
+
+        // ============================================================
+        // 7. ROBUST VERCEL GLIDING OVAL PILL ENGINE
+        // ============================================================
+        let currentDashCat = 'all';
+        let currentTmplCat = 'all';
+        let currentBilling = 'monthly';
+
+        function moveVercelPill(pill, targetEl, instant = false) {
+            if (!pill || !targetEl) return;
+            
+            const isCurrentlyHidden = (pill.style.opacity === '0' || getComputedStyle(pill).opacity === '0');
+            
+            if (instant || isCurrentlyHidden) {
+                // Snap immediately without visible flying animation from (0,0)
+                pill.style.transition = 'none';
+                pill.style.transform = `translate3d(${targetEl.offsetLeft}px, ${targetEl.offsetTop}px, 0)`;
+                pill.style.width = `${targetEl.offsetWidth}px`;
+                pill.style.height = `${targetEl.offsetHeight}px`;
+                
+                // Force reflow
+                void pill.offsetWidth;
+                
+                // Re-enable smooth transition and fade in
+                pill.style.transition = '';
+                pill.style.opacity = '1';
+            } else {
+                // Smooth spring glide between tabs
+                pill.style.transform = `translate3d(${targetEl.offsetLeft}px, ${targetEl.offsetTop}px, 0)`;
+                pill.style.width = `${targetEl.offsetWidth}px`;
+                pill.style.height = `${targetEl.offsetHeight}px`;
+                pill.style.opacity = '1';
+            }
+        }
+
+        function hideVercelPill(pill) {
+            if (pill) {
+                pill.style.opacity = '0';
+            }
+        }
+
+        // Navbar Vercel Hover Gliding Pill
+        function handleNavHover(link) {
+            moveVercelPill(document.getElementById('nav-hover-pill'), link);
+        }
+        function handleNavLeave() {
+            hideVercelPill(document.getElementById('nav-hover-pill'));
+        }
+
+        // Dashboard Tabs Vercel Sliding Oval Engine
+        function selectDashTab(cat, btn) {
+            currentDashCat = cat;
+            const activePill = document.getElementById('dash-active-pill');
+            const hoverPill = document.getElementById('dash-hover-pill');
+            
+            // Hide hover pill so it doesn't double-layer on active tab
+            hideVercelPill(hoverPill);
+            moveVercelPill(activePill, btn);
+            
+            document.querySelectorAll('.dash-tab-btn').forEach(b => {
+                b.classList.remove('text-black', 'font-bold');
+                b.classList.add('text-neutral-400');
+            });
+            btn.classList.remove('text-neutral-400');
+            btn.classList.add('text-black', 'font-bold');
+            
+            // Clean non-glitching card highlight/dim filtering (no grid collapse!)
+            const cards = document.querySelectorAll('.dash-card-item');
+            cards.forEach(card => {
+                const cardCat = card.dataset.category;
+                const matches = (cat === 'all' || cardCat === cat);
+                card.classList.toggle('card-dimmed', !matches);
+                card.classList.toggle('card-highlighted', matches && cat !== 'all');
+            });
+            playPop();
+        }
+
+        function handleDashTabHover(btn) {
+            if (btn.dataset.cat === currentDashCat) {
+                hideVercelPill(document.getElementById('dash-hover-pill'));
+                return;
+            }
+            moveVercelPill(document.getElementById('dash-hover-pill'), btn);
+        }
+
+        function handleDashTabsLeave() {
+            hideVercelPill(document.getElementById('dash-hover-pill'));
+        }
+
+        // Section 5 Templates Tabs Vercel Sliding Oval Engine
+        function filterTemplateCards(cat, btn) {
+            currentTmplCat = cat;
+            const activePill = document.getElementById('tmpl-active-pill');
+            const hoverPill = document.getElementById('tmpl-hover-pill');
+            
+            hideVercelPill(hoverPill);
+            moveVercelPill(activePill, btn);
+            
+            document.querySelectorAll('.tmpl-tab-btn').forEach(b => {
+                b.classList.remove('text-white', 'font-black');
+                b.classList.add('text-black');
+            });
+            btn.classList.remove('text-black');
+            btn.classList.add('text-white', 'font-black');
+            
+            // Clean non-glitching card highlight/dim filtering
+            const cards = document.querySelectorAll('.tmpl-card-item');
+            cards.forEach(card => {
+                const cardCat = card.dataset.category;
+                const matches = (cat === 'all' || cardCat === cat);
+                card.classList.toggle('card-dimmed', !matches);
+                card.classList.toggle('card-highlighted', matches && cat !== 'all');
+            });
+            playPop();
+        }
+
+        function handleTmplTabHover(btn) {
+            if (btn.dataset.cat === currentTmplCat) {
+                hideVercelPill(document.getElementById('tmpl-hover-pill'));
+                return;
+            }
+            moveVercelPill(document.getElementById('tmpl-hover-pill'), btn);
+        }
+
+        function handleTmplTabsLeave() {
+            hideVercelPill(document.getElementById('tmpl-hover-pill'));
+        }
+
+        // ============================================================
+        // 8. STICKY FULL SCREEN VERTICAL SCROLL CONTROLLER
+        // ============================================================
+        function updateStickyScroll() {
+            const stickySection = document.getElementById('workflow-tour');
+            if (!stickySection) return;
+            const rect = stickySection.getBoundingClientRect();
+            const totalDist = stickySection.offsetHeight - window.innerHeight;
+            if (totalDist <= 0) return;
+            
+            const progress = Math.max(0, Math.min(1, -rect.top / totalDist));
+            
+            let activeStage = 0;
+            if (progress < 0.33) {
+                activeStage = 0;
+            } else if (progress < 0.67) {
+                activeStage = 1;
+            } else {
+                activeStage = 2;
+            }
+            
+            // Update badge counter
+            const stepNum = document.getElementById('sticky-step-num');
+            if (stepNum) {
+                stepNum.innerText = `0${activeStage + 1} / 03`;
+            }
+            
+            // Update scrub fill bar
+            const tracker = document.getElementById('sticky-scroll-tracker');
+            if (tracker) {
+                tracker.style.height = `${Math.min(100, Math.max(12, progress * 100))}%`;
+            }
+            
+            // Toggle active stage on text and visual panels
+            for (let i = 0; i < 3; i++) {
+                const textPanel = document.getElementById(`text-stage-${i}`);
+                const visualPanel = document.getElementById(`visual-stage-${i}`);
+                if (textPanel) textPanel.classList.toggle('active', i === activeStage);
+                if (visualPanel) visualPanel.classList.toggle('active', i === activeStage);
+            }
+            
+            // Toggle step button indicators
+            document.querySelectorAll('.sticky-step-btn').forEach((btn, idx) => {
+                if (idx === activeStage) {
+                    btn.className = 'sticky-step-btn w-9 h-9 rounded-full bg-[#FAFF00] text-black font-mono font-black text-xs flex items-center justify-center transition-all duration-200 shadow-[0_0_15px_rgba(250,255,0,0.5)] scale-110 ring-2 ring-black';
+                } else if (idx < activeStage) {
+                    btn.className = 'sticky-step-btn w-9 h-9 rounded-full bg-neutral-700 text-neutral-200 font-mono font-bold text-xs flex items-center justify-center transition-all duration-200';
+                } else {
+                    btn.className = 'sticky-step-btn w-9 h-9 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-500 font-mono font-bold text-xs flex items-center justify-center transition-all duration-200';
+                }
+            });
+        }
+
+        function scrollToStage(stageIdx) {
+            const stickySection = document.getElementById('workflow-tour');
+            if (!stickySection) return;
+            const totalDist = stickySection.offsetHeight - window.innerHeight;
+            const progressTargets = [0.08, 0.50, 0.90];
+            const targetScrollY = stickySection.offsetTop + (totalDist * progressTargets[stageIdx]);
+            window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+            playPop();
+        }
+
+        window.addEventListener('scroll', updateStickyScroll, { passive: true });
+
+        // ============================================================
+        // 9. BILLING TOGGLE (Monthly vs Annual with 20% discount)
+        // ============================================================
+        function setBilling(mode, btn) {
+            currentBilling = mode;
+            const btnM = document.getElementById('btn-billing-monthly');
+            const btnA = document.getElementById('btn-billing-annual');
+            const pill = document.getElementById('billing-active-pill');
+            const targetBtn = btn || (mode === 'annual' ? btnA : btnM);
+            
+            moveVercelPill(pill, targetBtn);
+            
+            const pro = document.getElementById('price-pro');
+            const team = document.getElementById('price-team');
+
+            if (mode === 'annual') {
+                btnA.classList.remove('text-neutral-700');
+                btnA.classList.add('text-white');
+                btnM.classList.remove('text-white');
+                btnM.classList.add('text-neutral-700');
+                if (pro) pro.innerText = '₹399';
+                if (team) team.innerText = '₹1,199';
+            } else {
+                btnM.classList.remove('text-neutral-700');
+                btnM.classList.add('text-white');
+                btnA.classList.remove('text-white');
+                btnA.classList.add('text-neutral-700');
+                if (pro) pro.innerText = '₹499';
+                if (team) team.innerText = '₹1,499';
+            }
+            playPop();
+        }
+
+        function selectPlan(planName) {
+            showToast('Plan Selected', `${planName} (${currentBilling.toUpperCase()}) tier selected. Proceeding to checkout.`, '💳');
+        }
+
+        // ============================================================
+        // 9. TOAST NOTIFICATION ENGINE
+        // ============================================================
+        function showToast(title, message, icon = '✦') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = 'flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-neutral-950 border-2 border-[#FAFF00] text-white shadow-[0_10px_30px_rgba(0,0,0,0.85),4px_4px_0px_#FAFF00] font-sans text-xs tracking-wide transform translate-y-6 opacity-0 transition-all duration-300 pointer-events-auto';
+            toast.innerHTML = `
+                <span class="w-7 h-7 rounded-full bg-[#FAFF00] text-black font-black flex items-center justify-center text-sm shadow-[2px_2px_0px_#000] shrink-0">${icon}</span>
+                <div>
+                    <div class="font-black text-[#FAFF00] uppercase tracking-wider text-[11px]">${title}</div>
+                    <div class="text-neutral-300 font-medium">${message}</div>
+                </div>
+            `;
+            container.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-6', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            });
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+            playPop();
+        }
+
+        // ============================================================
+        // 10. INTERACTIVE FAQ ACCORDION
+        // ============================================================
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.faq-icon');
+            const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+            document.querySelectorAll('.faq-content').forEach(el => {
+                el.style.maxHeight = '0px';
+                el.style.opacity = '0';
+            });
+            document.querySelectorAll('.faq-icon').forEach(el => {
+                el.innerText = '+';
+                el.style.transform = 'rotate(0deg)';
+            });
+
+            if (!isOpen) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.opacity = '1';
+                icon.innerText = '−';
+                icon.style.transform = 'rotate(90deg)';
+                playPop();
+            } else {
+                playTick();
+            }
+        }
+
+        // ============================================================
+        // 11. EMIL KOWALSKI ORIGIN-AWARE MODALS & LIGHTBOXES
+        // ============================================================
+        function openDemoModal() {
+            document.getElementById('demo-modal').classList.add('modal-active');
+            playPop();
+        }
+        function closeDemoModal() {
+            document.getElementById('demo-modal').classList.remove('modal-active');
+            playTick();
+        }
+
+        function openSignInModal() {
+            document.getElementById('signin-modal').classList.add('modal-active');
+            playPop();
+        }
+        function closeSignInModal() {
+            document.getElementById('signin-modal').classList.remove('modal-active');
+            playTick();
+        }
+
+        function previewCard(title, imgSrc) {
+            document.getElementById('preview-title').innerText = title;
+            document.getElementById('preview-img').src = imgSrc;
+            document.getElementById('preview-modal').classList.add('modal-active');
+            playPop();
+        }
+        function closeCardPreview() {
+            document.getElementById('preview-modal').classList.remove('modal-active');
+            playTick();
+        }
+
+        // ============================================================
+        // 11. DYNAMIC TESTIMONIAL CAROUSEL
+        // ============================================================
+        const allTestimonials = [
+            {
+                quote: "NEOFRAME completely changed how I make content. It's fast, clean and super easy to use!",
+                name: "Aarav Mehta",
+                role: "Student & Creator",
+                avatar: "assets/avatar-aarav.png"
+            },
+            {
+                quote: "The templates are next level. I made my entire college fest branding in a day!",
+                name: "Riya Sharma",
+                role: "Design Lead, College Fest",
+                avatar: "assets/avatar-riya.png"
+            },
+            {
+                quote: "Clean, powerful and perfect for teams. We use it for all our social media and posters.",
+                name: "Karan Patil",
+                role: "Tech Club President",
+                avatar: "assets/avatar-karan.png"
+            },
+            {
+                quote: "The kinetic typography and SVG exports saved our agency 40+ hours during launch week.",
+                name: "Ananya Roy",
+                role: "Motion & UI Lead",
+                avatar: "assets/avatar-aarav.png"
+            },
+            {
+                quote: "Finally a tool that doesn't feel like another bland corporate SaaS. It has raw creative soul.",
+                name: "Devansh Verma",
+                role: "Creative Director",
+                avatar: "assets/avatar-riya.png"
+            }
+        ];
+
+        let testimonialIndex = 0;
+
+        function renderTestimonials() {
+            const grid = document.getElementById('testimonials-grid');
+            if (!grid) return;
+            
+            grid.style.opacity = '0';
+            grid.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                grid.innerHTML = '';
+                for (let i = 0; i < 3; i++) {
+                    const idx = (testimonialIndex + i) % allTestimonials.length;
+                    const t = allTestimonials[idx];
+                    const card = document.createElement('div');
+                    card.className = 'p-8 rounded-3xl bg-neutral-900/90 border border-neutral-800 flex flex-col justify-between hover-lift transition-all duration-300';
+                    card.innerHTML = `
+                        <p class="text-base text-neutral-200 leading-relaxed mb-8 font-medium">
+                            "${t.quote}"
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-neutral-800">
+                            <div class="flex items-center gap-3">
+                                <img src="${t.avatar}" alt="${t.name}" class="w-10 h-10 rounded-full border border-neutral-700 object-cover">
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">${t.name}</h4>
+                                    <p class="text-xs text-neutral-400">${t.role}</p>
+                                </div>
+                            </div>
+                            <div class="text-amber-400 text-sm tracking-wider">★★★★★</div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
+                grid.style.opacity = '1';
+                grid.style.transform = 'translateY(0)';
+            }, 180);
+        }
+
+        function nextTestimonial() {
+            testimonialIndex = (testimonialIndex + 1) % allTestimonials.length;
+            renderTestimonials();
+            playPop();
+        }
+
+        function prevTestimonial() {
+            testimonialIndex = (testimonialIndex - 1 + allTestimonials.length) % allTestimonials.length;
+            renderTestimonials();
+            playTick();
+        }
+
+        // ============================================================
+        // 12. INITIALIZE VERCEL OVAL PILLS ON LOAD & RESIZE
+        // ============================================================
+        function initVercelPills(instant = true) {
+            // 1. Dashboard active pill (to currently active tab)
+            const activeDashBtn = document.querySelector(`.dash-tab-btn[data-cat="${currentDashCat}"]`) || document.querySelector('.dash-tab-btn');
+            if (activeDashBtn) {
+                moveVercelPill(document.getElementById('dash-active-pill'), activeDashBtn, instant);
+            }
+            
+            // 2. Template active pill (to currently active tab)
+            const activeTmplBtn = document.querySelector(`.tmpl-tab-btn[data-cat="${currentTmplCat}"]`) || document.querySelector('.tmpl-tab-btn');
+            if (activeTmplBtn) {
+                moveVercelPill(document.getElementById('tmpl-active-pill'), activeTmplBtn, instant);
+            }
+            
+            // 3. Billing active pill (to currently active billing mode)
+            const billingBtn = document.getElementById(currentBilling === 'annual' ? 'btn-billing-annual' : 'btn-billing-monthly');
+            if (billingBtn) {
+                moveVercelPill(document.getElementById('billing-active-pill'), billingBtn, instant);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            initVercelPills(true);
+            updateStickyScroll();
+        });
+        window.addEventListener('resize', () => {
+            initVercelPills(true);
+            updateStickyScroll();
+        });
+        if (document.fonts) {
+            document.fonts.ready.then(() => initVercelPills(true));
+        }
+        setTimeout(() => initVercelPills(true), 60);
+    </script>
+</body>
+</html>

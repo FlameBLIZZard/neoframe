@@ -1,0 +1,11 @@
+# keep deploys small: only the built site + api function go up
+node_modules
+src
+build.py
+tailwind.config.js
+server.py
+run.bat
+README.md
+index.v1-original.html
+assets/*.png
+assets/*.jpg
