@@ -20,6 +20,13 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
 
+  <script>
+    /* Motion guard: hide hero bits until GSAP runs; if libraries fail, show everything after 3.5s */
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js-motion');
+      setTimeout(function () { if (!window.__nfMotion) document.documentElement.classList.remove('js-motion'); }, 3500);
+    }
+  </script>
   <!--FONTS-->
   <link rel="preload" as="image" href="assets/hero.avif" type="image/avif">
   <link rel="stylesheet" href="styles.css">
@@ -29,17 +36,19 @@
 
   <!-- ============ NAV ============ -->
   <header class="sticky top-0 z-50 border-b-[3px] border-ink bg-paper">
+    <div id="nf-progress" class="pointer-events-none absolute -bottom-[3px] left-0 h-[3px] w-full origin-left scale-x-0 bg-hot" aria-hidden="true"></div>
     <div class="mx-auto flex h-[69px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
       <a href="#top" class="flex items-center gap-2 text-2xl font-extrabold tracking-tight" aria-label="NEOFRAME home">
         <svg viewBox="0 0 24 24" class="h-6 w-6" aria-hidden="true"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
         <span>NEOFRAME</span>
       </a>
-      <nav aria-label="Main" class="hidden items-center gap-1 text-[15px] font-semibold md:flex">
-        <a href="#features" class="rounded-full px-3.5 py-2 hover:bg-acid">Features</a>
-        <a href="#how" class="rounded-full px-3.5 py-2 hover:bg-acid">How it works</a>
-        <a href="#templates" class="rounded-full px-3.5 py-2 hover:bg-acid">Templates</a>
-        <a href="#pricing" class="rounded-full px-3.5 py-2 hover:bg-acid">Pricing</a>
-        <a href="#faq" class="rounded-full px-3.5 py-2 hover:bg-acid">FAQ</a>
+      <nav aria-label="Main" id="main-nav" class="relative hidden items-center gap-1 text-[15px] font-semibold md:flex">
+        <span id="nav-pill" class="pointer-events-none absolute left-0 top-0 h-full rounded-full border-2 border-ink bg-acid opacity-0" aria-hidden="true"></span>
+        <a href="#features" class="nav-link marker relative z-10 rounded-full px-3.5 py-2" data-sec="features">Features</a>
+        <a href="#how" class="nav-link marker relative z-10 rounded-full px-3.5 py-2" data-sec="how">How it works</a>
+        <a href="#templates" class="nav-link marker relative z-10 rounded-full px-3.5 py-2" data-sec="templates">Templates</a>
+        <a href="#pricing" class="nav-link marker relative z-10 rounded-full px-3.5 py-2" data-sec="pricing">Pricing</a>
+        <a href="#faq" class="nav-link marker relative z-10 rounded-full px-3.5 py-2" data-sec="faq">FAQ</a>
       </nav>
       <div class="flex items-center gap-2">
         <button type="button" data-waitlist class="btn btn-ink hidden px-5 py-2.5 text-sm sm:inline-flex">Join the waitlist</button>
@@ -65,38 +74,49 @@
     <section id="top" class="dots relative overflow-hidden border-b-[3px] border-ink">
       <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 pb-20 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:pb-28 lg:pt-16">
         <div class="lg:col-span-7">
-          <h1 class="display text-[clamp(3.4rem,min(10vw,13vh),8.4rem)] uppercase">
-            Make posters, posts&nbsp;&amp;&nbsp;decks
-            <span class="tape mt-2 inline-block -rotate-1 rounded-xl border-[3px] border-ink px-3 pb-1 pt-2 shadow-brut">that stop the scroll</span>
+          <h1 class="display text-[clamp(3.4rem,min(10vw,13vh),8.4rem)] uppercase" data-hero-hide>
+            <span class="h1-a block">Make posters, posts&nbsp;&amp;&nbsp;decks</span>
+            <span class="tape h1-tape mt-2 inline-block -rotate-1 rounded-xl border-[3px] border-ink px-3 pb-1 pt-2 shadow-brut"><span class="h1-b">that stop the scroll</span></span>
           </h1>
-          <p class="mt-8 max-w-xl text-lg leading-relaxed text-neutral-800 sm:text-xl">
+          <p class="hero-sub mt-8 max-w-xl text-lg leading-relaxed text-neutral-800 sm:text-xl" data-hero-hide>
             NEOFRAME is a design toolkit for students, clubs and creators. Pick a loud template, drop in your colours, and export files ready for print or Instagram in minutes.
           </p>
-          <div class="mt-9 flex flex-wrap items-center gap-3">
+          <div class="hero-cta mt-9 flex flex-wrap items-center gap-3" data-hero-hide>
             <button type="button" data-waitlist class="btn btn-ink text-lg">Join the early access</button>
             <a href="#how" class="btn btn-paper text-lg">See how it works</a>
           </div>
-          <p class="mt-5 text-sm font-medium text-neutral-700">Free while we're in early access. No card needed.</p>
+          <p class="hero-note mt-5 text-sm font-medium text-neutral-700" data-hero-hide>Free while we're in early access. No card needed.</p>
         </div>
 
         <div class="relative mx-auto w-full max-w-[480px] lg:col-span-5">
           <div id="hero-art" class="relative" data-tilt>
-            <div class="overflow-hidden rounded-3xl border-[4px] border-ink bg-paper shadow-brut-lg">
-              <img src="assets/hero.avif" width="720" height="720" alt="Pop-art collage of a marble statue on neon yellow, pink and green shapes with a 'Create faster' sign" class="h-auto w-full" fetchpriority="high">
+            <div class="hero-frame relative overflow-hidden rounded-3xl border-[4px] border-ink bg-paper shadow-brut-lg" data-hero-hide>
+              <img id="hero-img" src="assets/hero.avif" width="720" height="720" alt="Pop-art collage of a marble statue on neon yellow, pink and green shapes with a 'Create faster' sign" class="h-auto w-full" fetchpriority="high">
             </div>
-            <div class="drag sticker slap slap-1 absolute -left-4 -top-5 bg-paper [--r:-6deg]" style="rotate:-6deg">
+            <div data-hero-hide class="hero-sticker drag sticker slap slap-1 absolute -left-4 -top-5 bg-paper [--r:-6deg]" style="rotate:-6deg">
               <i-con name="zap" class="h-4 w-4"></i-con> Create faster
             </div>
-            <div class="drag sticker slap slap-2 absolute -bottom-5 -right-3 bg-acid font-sans font-extrabold [--r:3deg]" style="rotate:3deg">
+            <div data-hero-hide class="hero-sticker drag sticker slap slap-2 absolute -bottom-5 -right-3 bg-acid font-sans font-extrabold [--r:3deg]" style="rotate:3deg">
               Early access 2026
             </div>
-            <div class="drag sticker slap slap-3 absolute -right-6 top-1/3 bg-hot text-paper [--r:8deg]" style="rotate:8deg">
+            <div data-hero-hide class="hero-sticker drag sticker slap slap-3 absolute -right-6 top-1/3 bg-hot text-paper [--r:8deg]" style="rotate:8deg">
               Drag me
             </div>
           </div>
         </div>
       </div>
     </section>
+
+
+    <!-- ticker: hero -> features -->
+    <div class="ticker-zone relative z-20 h-0" aria-hidden="true">
+      <div class="ticker absolute -left-[5%] -right-[5%] top-0 -translate-y-1/2 -rotate-2 overflow-hidden border-y-[3px] border-ink bg-acid py-2.5 text-ink">
+        <div class="ticker-track flex w-max whitespace-nowrap font-sans text-2xl font-extrabold uppercase [font-stretch:75%]">
+          <span class="px-4">Posters ✦ Posts ✦ Decks ✦ Fest passes ✦ Club feeds ✦ Covers ✦ Banners ✦ Stories ✦&nbsp;</span>
+          <span class="px-4">Posters ✦ Posts ✦ Decks ✦ Fest passes ✦ Club feeds ✦ Covers ✦ Banners ✦ Stories ✦&nbsp;</span>
+        </div>
+      </div>
+    </div>
 
     <!-- ============ FEATURES ============ -->
     <section id="features" class="on-dark dots-light relative border-b-[3px] border-ink bg-ink py-24 text-paper">
@@ -105,20 +125,20 @@
           <h2 class="display text-[clamp(2.8rem,6vw,4.6rem)]">Everything for a fest poster, a club feed or a pitch deck.</h2>
           <p class="mt-6 max-w-md text-lg leading-relaxed text-neutral-300">One place to design it, brand it, share it with your team and export it — without opening five different apps.</p>
           <ul class="mt-10 divide-y divide-white/15 border-y border-white/15">
-            <li class="flex gap-4 py-5">
-              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-acid text-ink"><i-con name="zap" class="h-5 w-5"></i-con></span>
+            <li class="feat-row flex gap-4 py-5">
+              <span class="feat-icon grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-acid text-ink"><i-con name="zap" class="h-5 w-5"></i-con></span>
               <div><h3 class="text-lg font-bold">Quick to start</h3><p class="text-neutral-400">Pick a template and you're editing in seconds.</p></div>
             </li>
-            <li class="flex gap-4 py-5">
-              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-cyan text-ink"><i-con name="users" class="h-5 w-5"></i-con></span>
+            <li class="feat-row flex gap-4 py-5">
+              <span class="feat-icon grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-cyan text-ink"><i-con name="users" class="h-5 w-5"></i-con></span>
               <div><h3 class="text-lg font-bold">Edit together</h3><p class="text-neutral-400">Invite your team and work on the same file at the same time.</p></div>
             </li>
-            <li class="flex gap-4 py-5">
-              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-hot text-ink"><i-con name="layout-template" class="h-5 w-5"></i-con></span>
+            <li class="feat-row flex gap-4 py-5">
+              <span class="feat-icon grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-hot text-ink"><i-con name="layout-template" class="h-5 w-5"></i-con></span>
               <div><h3 class="text-lg font-bold">Templates with attitude</h3><p class="text-neutral-400">Posters, carousels, slides and covers — none of them beige.</p></div>
             </li>
-            <li class="flex gap-4 py-5">
-              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-paper text-ink"><i-con name="palette" class="h-5 w-5"></i-con></span>
+            <li class="feat-row flex gap-4 py-5">
+              <span class="feat-icon grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-paper bg-paper text-ink"><i-con name="palette" class="h-5 w-5"></i-con></span>
               <div><h3 class="text-lg font-bold">Your brand, everywhere</h3><p class="text-neutral-400">Save your colours and fonts once and apply them to every design.</p></div>
             </li>
           </ul>
@@ -126,7 +146,7 @@
 
         <!-- App mockup -->
         <div class="relative lg:col-span-7">
-          <figure class="overflow-hidden rounded-2xl border-[3px] border-paper bg-neutral-950 shadow-[10px_10px_0_0_#FAFF00]">
+          <figure id="mockup" class="relative overflow-hidden rounded-2xl border-[3px] border-paper bg-neutral-950 shadow-[10px_10px_0_0_#FAFF00]">
             <figcaption class="sr-only">Preview of the NEOFRAME app: a template library with posters, social posts, slides and covers.</figcaption>
             <div class="flex items-center justify-between gap-3 border-b border-white/15 bg-neutral-900 px-4 py-3">
               <div class="flex items-center gap-2" aria-hidden="true">
@@ -147,11 +167,11 @@
                 <span class="flex items-center gap-2.5 rounded-lg px-2.5 py-2"><i-con name="tag" class="h-4 w-4"></i-con>Brand kit</span>
                 <span class="flex items-center gap-2.5 rounded-lg px-2.5 py-2"><i-con name="users" class="h-4 w-4"></i-con>Team</span>
               </div>
-              <div class="grid flex-1 grid-cols-2 gap-3 p-3 sm:p-4">
-                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover transition" data-cat="posters" src="assets/card-tech-event.avif" width="480" height="643" alt="Synapse tech forum poster template" loading="lazy">
-                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover transition" data-cat="social" src="assets/card-carousel.avif" width="480" height="643" alt="Urban Artifact streetwear social post template" loading="lazy">
-                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover transition" data-cat="slides" src="assets/card-presentation.avif" width="480" height="643" alt="Make It Real presentation cover template" loading="lazy">
-                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover transition" data-cat="posters" src="assets/card-portfolio.avif" width="480" height="643" alt="Archetype editorial portfolio cover template" loading="lazy">
+              <div id="dash-grid" class="grid flex-1 grid-cols-2 content-start gap-3 p-3 sm:p-4">
+                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover" data-cat="posters" src="assets/card-tech-event.avif" width="480" height="643" alt="Synapse tech forum poster template" loading="lazy">
+                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover" data-cat="social" src="assets/card-carousel.avif" width="480" height="643" alt="Urban Artifact streetwear social post template" loading="lazy">
+                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover" data-cat="slides" src="assets/card-presentation.avif" width="480" height="643" alt="Make It Real presentation cover template" loading="lazy">
+                <img class="dash-card aspect-[3/4] w-full rounded-lg border border-white/10 object-cover" data-cat="posters" src="assets/card-portfolio.avif" width="480" height="643" alt="Archetype editorial portfolio cover template" loading="lazy">
               </div>
             </div>
           </figure>
@@ -196,13 +216,14 @@
               </div>
               <div class="relative">
                 <img src="assets/card-presentation.avif" width="480" height="643" alt="" class="aspect-[4/5] w-full rounded-xl object-cover" loading="lazy">
-                <div class="absolute left-[6%] right-[8%] top-[9%] h-[38%] border-2 border-dashed border-hot">
-                  <span class="absolute -left-1.5 -top-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
-                  <span class="absolute -right-1.5 -top-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
-                  <span class="absolute -bottom-1.5 -left-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
-                  <span class="absolute -bottom-1.5 -right-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
-                  <span class="absolute -top-8 left-0 rounded-md bg-hot px-2 py-0.5 text-xs font-bold text-paper">Headline</span>
-                </div>
+                <svg class="sel-svg absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 80 100" preserveAspectRatio="none" aria-hidden="true">
+                  <rect class="sel-rect" x="4.8" y="9" width="69" height="38" fill="none" stroke="#FF0080" stroke-width="0.6"/>
+                </svg>
+                <span class="sel-h absolute left-[6%] top-[9%] -ml-1.5 -mt-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
+                <span class="sel-h absolute right-[7.75%] top-[9%] -mr-1.5 -mt-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
+                <span class="sel-h absolute left-[6%] top-[47%] -ml-1.5 -mt-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
+                <span class="sel-h absolute right-[7.75%] top-[47%] -mr-1.5 -mt-1.5 h-3 w-3 border-2 border-hot bg-paper"></span>
+                <span class="sel-label absolute left-[6%] top-[9%] -mt-8 rounded-md bg-hot px-2 py-0.5 text-xs font-bold text-paper">Headline</span>
               </div>
             </div>
           </div>
@@ -225,9 +246,10 @@
           </div>
           <!-- Step 2 visual -->
           <div class="wf-vis wf-vis-1" aria-hidden="true">
-            <div class="tape relative mx-auto max-w-[520px] lg:max-w-[min(520px,75vh)] rounded-3xl border-[3px] border-ink p-4 shadow-brut-lg">
-              <img src="assets/workflow.avif" width="760" height="567" alt="" class="w-full rounded-2xl border-[3px] border-ink" loading="lazy">
-              <span class="sticker absolute -bottom-4 right-6 rotate-2 bg-paper">Brand kit applied</span>
+            <div id="wf-paint" class="tape relative mx-auto max-w-[520px] lg:max-w-[min(520px,75vh)] overflow-hidden rounded-3xl border-[3px] border-ink p-4 shadow-brut-lg">
+              <span class="wipe pointer-events-none absolute inset-0 z-0" aria-hidden="true"></span>
+              <img src="assets/workflow.avif" width="760" height="567" alt="" class="relative z-10 w-full rounded-2xl border-[3px] border-ink" loading="lazy">
+              <span class="sticker absolute bottom-6 right-6 z-20 rotate-2 bg-paper">Brand kit applied</span>
             </div>
           </div>
 
@@ -239,7 +261,8 @@
           </div>
           <!-- Step 3 visual: export panel -->
           <div class="wf-vis wf-vis-2" aria-hidden="true">
-            <div class="mx-auto max-w-[460px] rounded-3xl border-[3px] border-ink bg-paper p-5 shadow-brut-lg">
+            <div class="export-card relative mx-auto max-w-[460px] rounded-3xl border-[3px] border-ink bg-paper p-5 shadow-brut-lg">
+              <span class="ready-stamp pointer-events-none absolute -right-4 top-6 z-20 -rotate-12 rounded-xl border-[4px] border-hot bg-paper px-3 py-1 text-xl font-extrabold uppercase text-hot opacity-0 [font-stretch:75%]">3 files ready</span>
               <div class="flex items-center gap-4 border-b-2 border-ink pb-4">
                 <img src="assets/card-tech-event.avif" width="480" height="643" alt="" class="h-20 w-16 rounded-md border-2 border-ink object-cover" loading="lazy">
                 <div>
@@ -248,12 +271,12 @@
                 </div>
               </div>
               <ul class="divide-y-2 divide-ink/10 py-2">
-                <li class="flex items-center gap-3 py-3"><span class="grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="h-4 w-4"></i-con></span><b class="w-12">PNG</b><span class="text-neutral-600">Instagram post, 1080 × 1350</span></li>
-                <li class="flex items-center gap-3 py-3"><span class="grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="h-4 w-4"></i-con></span><b class="w-12">JPG</b><span class="text-neutral-600">WhatsApp status, 1080 × 1920</span></li>
+                <li class="flex items-center gap-3 py-3"><span class="chk grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="chk-i h-4 w-4"></i-con></span><b class="w-12">PNG</b><span class="text-neutral-600">Instagram post, 1080 × 1350</span></li>
+                <li class="flex items-center gap-3 py-3"><span class="chk grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="chk-i h-4 w-4"></i-con></span><b class="w-12">JPG</b><span class="text-neutral-600">WhatsApp status, 1080 × 1920</span></li>
                 <li class="flex items-center gap-3 py-3"><span class="h-6 w-6 rounded-md border-2 border-ink"></span><b class="w-12">SVG</b><span class="text-neutral-600">Scales to any size</span></li>
-                <li class="flex items-center gap-3 py-3"><span class="grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="h-4 w-4"></i-con></span><b class="w-12">PDF</b><span class="text-neutral-600">A3 print, 3 mm bleed</span></li>
+                <li class="flex items-center gap-3 py-3"><span class="chk grid h-6 w-6 place-items-center rounded-md border-2 border-ink bg-acid"><i-con name="check" class="chk-i h-4 w-4"></i-con></span><b class="w-12">PDF</b><span class="text-neutral-600">A3 print, 3 mm bleed</span></li>
               </ul>
-              <div class="mt-2 flex items-center justify-center gap-2 rounded-full border-[3px] border-ink bg-ink py-3.5 font-bold text-paper"><i-con name="download" class="h-5 w-5"></i-con>Export 3 files</div>
+              <div class="export-btn relative mt-2 flex items-center justify-center gap-2 overflow-hidden rounded-full border-[3px] border-ink bg-ink py-3.5 font-bold text-paper"><span class="export-fill absolute inset-y-0 left-0 w-full origin-left scale-x-0 bg-hot"></span><span class="relative flex items-center gap-2"><i-con name="download" class="h-5 w-5"></i-con>Export 3 files</span></div>
             </div>
           </div>
         </div>
@@ -268,21 +291,21 @@
           <p class="mt-6 text-lg leading-relaxed">Posters, social posts, slides and covers, all built in this loud, print-ready style. Here's a first look at the launch library.</p>
           <button type="button" data-waitlist class="btn btn-ink mt-8 text-lg">Get the full library</button>
         </div>
-        <ul class="grid grid-cols-2 gap-4 sm:gap-5 lg:col-span-8 lg:grid-cols-4">
-          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition hover:-translate-y-1" data-title="Synapse — tech fest poster" data-img="assets/card-tech-event.avif">
-            <img src="assets/card-tech-event.avif" width="480" height="643" alt="" class="aspect-[3/4] w-full object-cover" loading="lazy">
+        <ul id="tmpl-grid" class="grid grid-cols-2 gap-4 sm:gap-5 lg:col-span-8 lg:grid-cols-4">
+          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition-transform hover:-translate-y-1" data-title="Synapse — tech fest poster" data-img="assets/card-tech-event.avif">
+            <img src="assets/card-tech-event.avif" width="480" height="643" alt="" class="tmpl-img aspect-[3/4] w-full object-cover" loading="lazy">
             <span class="block border-t-[3px] border-ink p-3"><b class="block leading-tight">Tech fest</b><span class="text-sm text-neutral-600">Poster</span></span>
           </button></li>
-          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition hover:-translate-y-1" data-title="Urban Artifact — social post" data-img="assets/card-carousel.avif">
-            <img src="assets/card-carousel.avif" width="480" height="643" alt="" class="aspect-[3/4] w-full object-cover" loading="lazy">
+          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition-transform hover:-translate-y-1" data-title="Urban Artifact — social post" data-img="assets/card-carousel.avif">
+            <img src="assets/card-carousel.avif" width="480" height="643" alt="" class="tmpl-img aspect-[3/4] w-full object-cover" loading="lazy">
             <span class="block border-t-[3px] border-ink p-3"><b class="block leading-tight">Streetwear drop</b><span class="text-sm text-neutral-600">Social carousel</span></span>
           </button></li>
-          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition hover:-translate-y-1" data-title="Make It Real — slide deck" data-img="assets/card-presentation.avif">
-            <img src="assets/card-presentation.avif" width="480" height="643" alt="" class="aspect-[3/4] w-full object-cover" loading="lazy">
+          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition-transform hover:-translate-y-1" data-title="Make It Real — slide deck" data-img="assets/card-presentation.avif">
+            <img src="assets/card-presentation.avif" width="480" height="643" alt="" class="tmpl-img aspect-[3/4] w-full object-cover" loading="lazy">
             <span class="block border-t-[3px] border-ink p-3"><b class="block leading-tight">Make it real</b><span class="text-sm text-neutral-600">Slides</span></span>
           </button></li>
-          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition hover:-translate-y-1" data-title="Archetype — portfolio cover" data-img="assets/card-portfolio.avif">
-            <img src="assets/card-portfolio.avif" width="480" height="643" alt="" class="aspect-[3/4] w-full object-cover" loading="lazy">
+          <li><button type="button" class="tmpl group w-full overflow-hidden rounded-2xl border-[3px] border-ink bg-paper text-left shadow-brut transition-transform hover:-translate-y-1" data-title="Archetype — portfolio cover" data-img="assets/card-portfolio.avif">
+            <img src="assets/card-portfolio.avif" width="480" height="643" alt="" class="tmpl-img aspect-[3/4] w-full object-cover" loading="lazy">
             <span class="block border-t-[3px] border-ink p-3"><b class="block leading-tight">Archetype</b><span class="text-sm text-neutral-600">Portfolio cover</span></span>
           </button></li>
         </ul>
@@ -294,17 +317,17 @@
       <div class="mx-auto max-w-7xl px-4 sm:px-6">
         <h2 class="display max-w-4xl text-[clamp(2.8rem,6vw,4.6rem)]">Made for people who make things on a deadline.</h2>
         <div class="mt-14 grid gap-8 md:grid-cols-3">
-          <article class="rotate-[-1.5deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg">
+          <article data-rot="-1.5" class="note rotate-[-1.5deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg">
             <span class="grid h-12 w-12 place-items-center rounded-xl border-[3px] border-ink bg-acid"><i-con name="megaphone" class="h-6 w-6"></i-con></span>
             <h3 class="display mt-5 text-4xl">College fests</h3>
             <p class="mt-3 text-lg leading-relaxed text-neutral-800">Posters, passes, banners and stories for the whole fest — all in one look, so it actually feels like one event.</p>
           </article>
-          <article class="rotate-[1deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg md:mt-8">
+          <article data-rot="1" class="note rotate-[1deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg md:mt-8">
             <span class="grid h-12 w-12 place-items-center rounded-xl border-[3px] border-ink bg-cyan"><i-con name="users" class="h-6 w-6"></i-con></span>
             <h3 class="display mt-5 text-4xl">Clubs &amp; societies</h3>
             <p class="mt-3 text-lg leading-relaxed text-neutral-800">A month of event posts ready before the meeting ends. Everyone edits the same brand kit, so nobody goes off-brand.</p>
           </article>
-          <article class="rotate-[-0.5deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg">
+          <article data-rot="-0.5" class="note rotate-[-0.5deg] rounded-2xl border-[3px] border-ink bg-paper p-7 shadow-brut-lg">
             <span class="grid h-12 w-12 place-items-center rounded-xl border-[3px] border-ink bg-acid"><i-con name="presentation" class="h-6 w-6"></i-con></span>
             <h3 class="display mt-5 text-4xl">Portfolios &amp; pitches</h3>
             <p class="mt-3 text-lg leading-relaxed text-neutral-800">Covers and decks that look like you hired a studio, for the internship application or the demo-day slot.</p>
@@ -312,6 +335,17 @@
         </div>
       </div>
     </section>
+
+
+    <!-- ticker: made for -> pricing -->
+    <div class="ticker-zone relative z-20 h-0" aria-hidden="true">
+      <div class="ticker absolute -left-[5%] -right-[5%] top-0 -translate-y-1/2 rotate-[1.5deg] overflow-hidden border-y-[3px] border-ink bg-ink py-2.5 text-acid" data-dir="-1">
+        <div class="ticker-track flex w-max whitespace-nowrap font-sans text-2xl font-extrabold uppercase [font-stretch:75%]">
+          <span class="px-4">Made on deadline ✦ Printed by Friday ✦ Posted by Saturday ✦ No beige allowed ✦&nbsp;</span>
+          <span class="px-4">Made on deadline ✦ Printed by Friday ✦ Posted by Saturday ✦ No beige allowed ✦&nbsp;</span>
+        </div>
+      </div>
+    </div>
 
     <!-- ============ PRICING ============ -->
     <section id="pricing" class="relative border-b-[3px] border-ink bg-paper py-24">
@@ -323,12 +357,12 @@
           </div>
           <div class="inline-flex rounded-full border-[3px] border-ink bg-smoke p-1 shadow-brut-sm" role="group" aria-label="Billing period">
             <button type="button" class="bill rounded-full bg-ink px-5 py-2 text-sm font-bold text-paper" data-bill="monthly" aria-pressed="true">Monthly</button>
-            <button type="button" class="bill flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold" data-bill="annual" aria-pressed="false">Yearly <span class="rounded-full border-2 border-ink bg-acid px-2 text-xs text-ink">Save 20%</span></button>
+            <button type="button" class="bill flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold" data-bill="annual" aria-pressed="false">Yearly <span class="save-badge inline-block rounded-full border-2 border-ink bg-acid px-2 text-xs text-ink">Save 20%</span></button>
           </div>
         </div>
 
         <div class="mt-14 grid items-stretch gap-6 md:grid-cols-3">
-          <div class="flex flex-col rounded-3xl border-[3px] border-ink bg-paper p-7">
+          <div class="plan flex flex-col rounded-3xl border-[3px] border-ink bg-paper p-7">
             <h3 class="text-2xl font-extrabold">Free</h3>
             <p class="mt-1 text-neutral-600">For trying things out.</p>
             <p class="mt-6 flex items-baseline gap-1"><span class="display text-6xl">₹0</span><span class="text-neutral-600">/ month</span></p>
@@ -342,7 +376,8 @@
             <button type="button" data-waitlist data-plan="Free" class="btn btn-paper mt-8 w-full">Join the waitlist</button>
           </div>
 
-          <div class="relative flex flex-col rounded-3xl border-[3px] border-ink bg-acid p-7 shadow-brut-lg md:-translate-y-3">
+          <div class="plan plan-pro relative flex flex-col rounded-3xl border-[3px] border-ink bg-acid p-7 shadow-brut-lg md:-translate-y-3">
+            <span class="off-stamp pointer-events-none absolute right-4 top-[6.6rem] z-10 rotate-[-14deg] rounded-xl border-[4px] border-hot px-2 text-3xl font-extrabold text-hot opacity-0 [font-stretch:75%]" aria-hidden="true">−20%</span>
             <span class="sticker absolute -top-4 right-6 rotate-3 bg-ink text-paper">Best for creators</span>
             <h3 class="text-2xl font-extrabold">Pro</h3>
             <p class="mt-1 text-neutral-800">For people who post every week.</p>
@@ -358,7 +393,7 @@
             <button type="button" data-waitlist data-plan="Pro" class="btn btn-ink mt-8 w-full">Join the waitlist for Pro</button>
           </div>
 
-          <div class="flex flex-col rounded-3xl border-[3px] border-ink bg-paper p-7">
+          <div class="plan flex flex-col rounded-3xl border-[3px] border-ink bg-paper p-7">
             <h3 class="text-2xl font-extrabold">Team</h3>
             <p class="mt-1 text-neutral-600">For clubs, fests and small studios.</p>
             <p class="mt-6 flex items-baseline gap-1"><span class="display text-6xl" data-price-m="₹1,499" data-price-y="₹1,199">₹1,499</span><span class="text-neutral-600">/ month</span></p>
@@ -384,27 +419,27 @@
           <p class="mt-4 text-lg text-neutral-700">Something else on your mind? Add it as a note when you join the waitlist and we'll reply by email.</p>
         </div>
         <div class="space-y-3 lg:col-span-8">
-          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+          <details class="faq group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
             <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">When does NEOFRAME launch?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
             <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">We're opening access in waves through 2026. Join the waitlist and you'll get an email when your spot opens — waitlist members go first.</p>
           </details>
-          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+          <details class="faq group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
             <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Will there be a free plan?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
             <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">Yes. The Free plan includes 100+ templates, the core editor and standard exports, with no card needed.</p>
           </details>
-          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+          <details class="faq group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
             <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Can I use my designs commercially?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
             <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">Designs made on Pro and Team come with a commercial licence for client work, merch, ads and digital products.</p>
           </details>
-          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+          <details class="faq group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
             <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Is there a student discount?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
             <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">Yes — verified students get 50% off Pro. Pick "Student" when you join the waitlist and we'll send the details at launch.</p>
           </details>
-          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+          <details class="faq group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
             <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Which file formats can I export?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
             <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">PNG, JPG, SVG, and print-ready PDF with bleed and crop marks.</p>
           </details>
-          <details class="group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
+          <details class="faq group rounded-2xl border-[3px] border-ink bg-paper open:shadow-brut">
             <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-lg font-bold sm:text-xl">Can my whole team work on one design?<span class="faq-plus text-3xl leading-none transition-transform" aria-hidden="true">+</span></summary>
             <p class="px-5 pb-5 text-lg leading-relaxed text-neutral-700">Yes. Team plans include live co-editing, a shared brand kit, font uploads and role-based permissions.</p>
           </details>
@@ -416,7 +451,7 @@
     <section id="join" class="relative overflow-hidden border-b-[3px] border-ink bg-acid py-20 lg:py-24">
       <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-12">
         <div class="lg:col-span-7">
-          <h2 class="display text-[clamp(3.2rem,8vw,6.5rem)] uppercase">Your next poster is due Friday.</h2>
+          <h2 class="cta-title display text-[clamp(3.2rem,8vw,6.5rem)] uppercase">Your next poster is due Friday.</h2>
           <p class="mt-5 max-w-lg text-xl font-semibold">Get on the early-access list and be one of the first to make it in NEOFRAME.</p>
           <form class="waitlist-form mt-8 max-w-xl" novalidate>
             <label for="cta-email" class="mb-2 block font-bold">Your email</label>
@@ -430,7 +465,8 @@
           </form>
         </div>
         <div class="mx-auto w-full max-w-[420px] lg:col-span-5">
-          <div class="rotate-2 overflow-hidden rounded-3xl border-[4px] border-ink bg-paper shadow-brut-lg">
+          <div class="cta-frame relative rotate-2 overflow-hidden rounded-3xl border-[4px] border-ink bg-paper shadow-brut-lg">
+            <span class="due-stamp pointer-events-none absolute left-5 top-6 z-10 -rotate-[16deg] rounded-xl border-[5px] border-hot bg-paper/85 px-3 py-0.5 text-5xl font-extrabold uppercase text-hot opacity-0 [font-stretch:75%]" aria-hidden="true">Due</span>
             <img src="assets/cta.avif" width="640" height="640" alt="Marble bust with a hot-pink paint stroke across the eyes and an 'Ideas Design Impact' sign" class="h-auto w-full" loading="lazy">
           </div>
         </div>
@@ -449,11 +485,11 @@
       </div>
       <nav aria-label="Footer" class="md:col-span-3">
         <ul class="space-y-2 text-neutral-300">
-          <li><a class="hover:text-acid" href="#features">Features</a></li>
-          <li><a class="hover:text-acid" href="#how">How it works</a></li>
-          <li><a class="hover:text-acid" href="#templates">Templates</a></li>
-          <li><a class="hover:text-acid" href="#pricing">Pricing</a></li>
-          <li><a class="hover:text-acid" href="#faq">FAQ</a></li>
+          <li><a class="marker relative hover:text-acid" href="#features">Features</a></li>
+          <li><a class="marker relative hover:text-acid" href="#how">How it works</a></li>
+          <li><a class="marker relative hover:text-acid" href="#templates">Templates</a></li>
+          <li><a class="marker relative hover:text-acid" href="#pricing">Pricing</a></li>
+          <li><a class="marker relative hover:text-acid" href="#faq">FAQ</a></li>
         </ul>
       </nav>
       <div id="privacy" class="md:col-span-4">
@@ -465,7 +501,7 @@
   </footer>
 
   <!-- ============ WAITLIST DIALOG ============ -->
-  <dialog id="waitlist" aria-labelledby="wl-title" class="w-[min(92vw,30rem)] rounded-3xl border-[4px] border-ink bg-paper p-0 text-ink shadow-brut-lg">
+  <dialog data-lenis-prevent id="waitlist" aria-labelledby="wl-title" class="w-[min(92vw,30rem)] rounded-3xl border-[4px] border-ink bg-paper p-0 text-ink shadow-brut-lg">
     <div class="p-7">
       <div class="flex items-start justify-between gap-4">
         <h2 id="wl-title" class="display text-5xl">Join the early access</h2>
@@ -503,13 +539,13 @@
   </dialog>
 
   <!-- ============ TEMPLATE PREVIEW DIALOG ============ -->
-  <dialog id="preview" aria-labelledby="pv-title" class="w-[min(92vw,34rem)] rounded-3xl border-[4px] border-ink bg-paper p-0 text-ink shadow-brut-lg">
+  <dialog data-lenis-prevent id="preview" aria-labelledby="pv-title" class="w-[min(92vw,34rem)] rounded-3xl border-[4px] border-ink bg-paper p-0 text-ink shadow-brut-lg">
     <div class="p-6">
       <div class="flex items-start justify-between gap-4">
         <h2 id="pv-title" class="text-2xl font-extrabold">Template</h2>
         <button type="button" data-close class="grid h-10 w-10 shrink-0 place-items-center rounded-full border-[3px] border-ink hover:bg-acid" aria-label="Close"><i-con name="x" class="h-5 w-5"></i-con></button>
       </div>
-      <img id="pv-img" src="" alt="" width="480" height="643" class="mt-4 max-h-[60vh] w-full rounded-2xl border-[3px] border-ink object-contain bg-smoke">
+      <img id="pv-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="" width="480" height="643" class="mt-4 max-h-[60vh] w-full rounded-2xl border-[3px] border-ink object-contain bg-smoke">
       <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
         <p class="text-neutral-700">Part of the launch library. Fully editable.</p>
         <button type="button" id="pv-cta" class="btn btn-ink">Get early access</button>
@@ -523,6 +559,8 @@
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    // motion.js adds .gsap-on once GSAP is running; these basic handlers then step aside
+    const M = () => document.documentElement.classList.contains('gsap-on');
 
     /* ---------- Mobile menu ---------- */
     const menuBtn = $('#menu-btn'), menu = $('#mobile-menu');
@@ -546,7 +584,7 @@
     /* ---------- Draggable stickers (stay inside the hero) ---------- */
     $$('.drag').forEach(el => {
       let sx, sy, ox = 0, oy = 0, dragging = false;
-      el.addEventListener('pointerdown', e => { dragging = true; el.setPointerCapture(e.pointerId); sx = e.clientX - ox; sy = e.clientY - oy; el.style.zIndex = 30; el.classList.remove('slap'); });
+      el.addEventListener('pointerdown', e => { if (M()) return; dragging = true; el.setPointerCapture(e.pointerId); sx = e.clientX - ox; sy = e.clientY - oy; el.style.zIndex = 30; el.classList.remove('slap'); });
       el.addEventListener('pointermove', e => { if (!dragging) return; ox = e.clientX - sx; oy = e.clientY - sy; el.style.translate = `${ox}px ${oy}px`; });
       const end = () => { dragging = false; };
       el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
@@ -554,6 +592,7 @@
 
     /* ---------- App mockup filter ---------- */
     $$('.dash-tab').forEach(btn => btn.addEventListener('click', () => {
+      if (M()) return;
       const cat = btn.dataset.cat;
       $$('.dash-tab').forEach(b => {
         const on = b === btn;
@@ -577,7 +616,7 @@
       $$('.wf-dot').forEach((d, j) => { d.classList.toggle('bg-ink', j <= i); d.classList.toggle('bg-paper', j > i); d.setAttribute('aria-current', j === i ? 'step' : 'false'); });
     }
     function onScroll() {
-      if (!desktop.matches) return;
+      if (!desktop.matches || M()) return;
       const total = how.offsetHeight - innerHeight;
       const p = Math.min(1, Math.max(0, -how.getBoundingClientRect().top / total));
       const i = p < .34 ? 0 : p < .67 ? 1 : 2;
@@ -586,6 +625,7 @@
     addEventListener('scroll', onScroll, { passive: true });
     desktop.addEventListener('change', onScroll);
     $$('.wf-dot').forEach(d => d.addEventListener('click', () => {
+      if (M()) return;
       const total = how.offsetHeight - innerHeight;
       scrollTo({ top: how.offsetTop + total * [.1, .5, .9][d.dataset.step], behavior: reduce ? 'auto' : 'smooth' });
     }));
@@ -594,7 +634,7 @@
 
     /* ---------- Brand colour demo ---------- */
     $$('.swatch').forEach(s => s.addEventListener('click', () => {
-      document.documentElement.style.setProperty('--accent', s.dataset.hex);
+      if (!M()) document.documentElement.style.setProperty('--accent', s.dataset.hex); // motion.js paints it in
       $('#accent-name').textContent = s.dataset.name;
       $$('.swatch').forEach(o => o.setAttribute('aria-checked', o === s));
     }));
@@ -603,7 +643,8 @@
     $$('.bill').forEach(b => b.addEventListener('click', () => {
       const yearly = b.dataset.bill === 'annual';
       $$('.bill').forEach(o => { const on = o === b; o.setAttribute('aria-pressed', on); o.classList.toggle('bg-ink', on); o.classList.toggle('text-paper', on); });
-      $$('[data-price-m]').forEach(el => el.textContent = yearly ? el.dataset.priceY : el.dataset.priceM);
+      if (!M()) $$('[data-price-m]').forEach(el => el.textContent = yearly ? el.dataset.priceY : el.dataset.priceM);
+      window.dispatchEvent(new CustomEvent('nf:billing', { detail: { yearly } }));
       $$('[data-billed-y]').forEach(el => el.innerHTML = yearly ? el.dataset.billedY : '&nbsp;');
     }));
 
@@ -622,6 +663,7 @@
       d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-close]')) d.close(); });
     });
     $$('.tmpl').forEach(t => t.addEventListener('click', () => {
+      if (M()) return;
       $('#pv-title').textContent = t.dataset.title;
       const img = $('#pv-img'); img.src = t.dataset.img; img.alt = t.dataset.title + ' template preview';
       pv.showModal();
@@ -637,7 +679,8 @@
       if (!EMAIL.test((data.email || '').trim())) {
         status.textContent = 'Enter a valid email address, like you@college.edu.';
         status.className = 'form-status mt-3 min-h-[1.5rem] font-semibold text-red-700';
-        form.email.focus(); return;
+        form.email.focus();
+        window.dispatchEvent(new CustomEvent('nf:invalid', { detail: { field: form.email } })); return;
       }
       btn.disabled = true; const label = btn.textContent; btn.textContent = 'Joining…';
       status.textContent = ''; status.className = 'form-status mt-3 min-h-[1.5rem] font-semibold';
@@ -647,14 +690,20 @@
         if (!res.ok) throw new Error(out.error || 'save-failed');
         form.reset();
         status.textContent = `You're on the list. We'll email ${data.email.trim()} when your spot opens.`;
+        window.dispatchEvent(new CustomEvent('nf:joined', { detail: { button: btn } }));
       } catch (err) {
         status.textContent = err.message === 'invalid-email'
           ? 'That email doesn\'t look right. Check it and try again.'
           : 'Couldn\'t save that just now. Try again in a minute.';
         status.className = 'form-status mt-3 min-h-[1.5rem] font-semibold text-red-700';
+        window.dispatchEvent(new CustomEvent('nf:invalid', { detail: { field: form.email } }));
       } finally { btn.disabled = false; btn.textContent = label; }
     }));
   })();
   </script>
+
+  <!-- Motion libraries (pinned). If any fail to load, the page still works without animation. -->
+  <!--LIBS-->
+  <script src="motion.js" defer></script>
 </body>
 </html>

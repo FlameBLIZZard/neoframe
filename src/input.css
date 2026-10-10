@@ -93,3 +93,49 @@ details[open] .faq-plus { transform: rotate(45deg); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* =====================================================================
+   Motion layer (motion.js). .js-motion = JS + motion allowed (set in <head>),
+   .gsap-on = GSAP actually running. Without either, everything shows statically.
+   ===================================================================== */
+html, body { overflow-x: clip; }
+.js-motion [data-hero-hide] { visibility: hidden; }
+.js-motion .slap { animation: none; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+
+/* GSAP owns these transforms — drop the CSS versions so they don't fight */
+.gsap-on .btn { transition: box-shadow .15s ease, background-color .15s ease; }
+.gsap-on .btn:hover, .gsap-on .btn:active { transform: none; }
+.gsap-on .tmpl, .gsap-on .tmpl:hover { transition: none; transform: none; }
+.gsap-on dialog#preview[open] { animation: none; }
+.gsap-on details[open] .faq-plus { transform: none; }
+.gsap-on .faq-plus { transition: none; }
+
+/* Desktop workflow: GSAP scrubs the steps instead of CSS class swaps */
+@media (min-width: 1024px) {
+  .gsap-on .wf-text, .gsap-on .wf-vis { transition: none; opacity: 1; visibility: visible; transform: none; }
+}
+
+/* Hand-drawn marker underline (injected <svg class="marker-svg">) */
+.marker-svg { position: absolute; left: 6%; right: 6%; bottom: 2px; height: 10px; width: 88%; pointer-events: none; overflow: visible; }
+.marker-svg path { fill: none; stroke: #FF0080; stroke-width: 3.5; stroke-linecap: round; }
+footer .marker-svg { left: 0; right: 0; width: 100%; bottom: -6px; }
+footer .marker-svg path { stroke: #FAFF00; }
+
+/* Odometer price digits */
+.odo { display: inline-flex; font-variant-numeric: tabular-nums; }
+.odo-strip > span { text-align: center; }
+.odo-col { display: inline-block; height: 1em; overflow: hidden; line-height: 1; vertical-align: bottom; }
+.odo-strip { display: flex; flex-direction: column; }
+.odo-strip > span { height: 1em; line-height: 1; }
+
+/* Demo cursor in the app mockup */
+.demo-cursor { position: absolute; left: 0; top: 0; z-index: 30; width: 26px; height: 26px; pointer-events: none; opacity: 0; filter: drop-shadow(2px 2px 0 #000); }
+
+/* WebGL hero canvas */
+.hero-gl { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; }
